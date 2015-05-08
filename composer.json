@@ -1,0 +1,68 @@
+{
+    "name":         "canarium/canarium-kernal/canarium-core",
+    "type":         "library",
+    "description":  "The base of canarium that includes the framework and the abstraction layers that is crucial for building canarium-based applications.",
+    "keywords":     ["canarium", "core", "una realidad"],
+    "homepage":     "http://packages.canarium.ph",
+    "license":      "proprietary",
+    "authors": [
+        {
+            "name": "Errol A. Zuñiga Jr.",
+            "email": "errol.zuniga@unarealidad.com",
+            "role": "developer",
+        },
+        {
+            "name": "Jethro Laviste.",
+            "email": "jethro.laviste@unarealidad.com",
+            "role": "developer",
+            "homepage": "http://packages.canarium.ph"
+        }
+
+    ],
+    "support": {
+        "email":    "jethro.laviste@unarealidad.com"
+    },
+
+    "minimum-stability": "stable",
+
+    "require": {
+        "php"                               : ">=5.3",
+        "doctrine/doctrine-orm-module"      : "0.8.*",
+        "zendframework/zendframework"       : "2.2.5",
+        "zf-commons/zfc-user": "1.1.0",
+        "bjyoungblood/bjy-authorize": "dev-master",
+        "zf-commons/zfc-admin": "dev-master",
+        "zendframework/zendservice-recaptcha": "*",
+        "webino/webino-image-thumb": "dev-master",
+        "zf-commons/zfc-user-doctrine-orm": "1.0.0",
+        "zendframework/zftool": "dev-master",
+        "google/apiclient": "1.0.*@beta",
+        "beberlei/DoctrineExtensions": "dev-master",
+        "gedmo/doctrine-extensions": "2.3.*",
+        "zendframework/zend-developer-tools": "dev-master@dev",
+        "canarium/canarium-libraries/error-handler" : "dev-master",
+        "canarium/canarium-libraries/goalio-mail-service" : "dev-master",
+        "canarium/canarium-libraries/google-sso" : "dev-master",
+        "canarium/canarium-modules/page" : "dev-master",
+        "canarium/canarium-modules/settings" : "dev-master",
+    },
+
+    "require-dev": {
+        "phpunit/phpunit":                  "~3.7.5",
+        "phpunit/php-invoker":              "1.1.*"
+    },
+
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.canarium.ph"
+        }
+    ],
+
+    "autoload": {
+        "psr-0": {
+            "CanariumCore\\": "src/"
+        }
+    }
+
+}
