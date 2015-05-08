@@ -9,7 +9,7 @@
         {
             "name": "Errol A. Zuñiga Jr.",
             "email": "errol.zuniga@unarealidad.com",
-            "role": "developer",
+            "role": "developer"
         },
         {
             "name": "Jethro Laviste.",
@@ -44,7 +44,7 @@
         "canarium/canarium-libraries/goalio-mail-service" : "dev-master",
         "canarium/canarium-libraries/google-sso" : "dev-master",
         "canarium/canarium-modules/page" : "dev-master",
-        "canarium/canarium-modules/settings" : "dev-master",
+        "canarium/canarium-modules/settings" : "dev-master"
     },
 
     "require-dev": {
