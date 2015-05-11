@@ -78,7 +78,7 @@ return array(
 	'controllers' => array(
         'invokables' => array(
             'CanariumCore\Controller\Index' => 'CanariumCore\Controller\IndexController',
-			'Admin\Application' 	=> 'CanariumCore\Controller\AdminController',
+			'Admin\CanariumCore' 	=> 'CanariumCore\Controller\AdminController',
 			'User' 				=> 'CanariumCore\Controller\UserController',
 			'zfcuser' 	=> 'CanariumCore\Controller\UserController',
         ),
@@ -100,10 +100,10 @@ return array(
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
             // using the path /application/:controller/:action
-            'canariumcore' => array(
+            'canarium-core' => array(
                 'type'    => 'Literal',
                 'options' => array(
-                    'route'    => '/canariumcore',
+                    'route'    => '/canarium-core',
                     'defaults' => array(
                         '__NAMESPACE__' => 'CanariumCore\Controller',
                         'controller'    => 'Index',
@@ -132,7 +132,7 @@ return array(
                 'options' => array(
                     'route'    => '/admin',
                     'defaults' => array(
-                        'controller'    => 'Admin\Application',
+                        'controller'    => 'Admin\CanariumCore',
                         'action'        => 'index',
                     ),
                 ),
