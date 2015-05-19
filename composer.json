@@ -45,7 +45,8 @@
         "canarium/canarium-libraries/google-sso" : "dev-master",
         "canarium/canarium-modules/page" : "dev-master",
         "canarium/canarium-modules/form" : "dev-master",
-        "canarium/canarium-modules/settings" : "dev-master"
+        "canarium/canarium-modules/settings" : "dev-master",
+        "canarium/canarium-modules/contact-us" : "dev-master"
     },
 
     "require-dev": {
