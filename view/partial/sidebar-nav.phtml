@@ -31,43 +31,42 @@ $container = $this->container;
             }
             if ($access) :
                 ?>
-                <li class="menu-list" class="<?php if ($page->isActive(true)) echo 'nav-active'?>">
+                <li class="menu-list <?php if ($page->isActive(true)) echo 'nav-active'?>">
                 	<a href="#"><i class="<?=$page->get("icon")?>"></i><span><?=$page->getLabel()?></span></a>
-                   
+
                     <ul class="child-list">
                         <?php foreach ($page->getPages() as $child): ?>
                             <?php if (!$this->navigation()->accept($child)) continue; ?>
-                            	<?php $hasChildren = $child->hasPages() ?>
-       							<?php if (!$hasChildren): ?>
-                                    <li><a <?php if ($child->isActive()) echo ' class="active"'?> href="<?php echo $child->getHref() ?>"
-                                        <?php if ($child->getTarget() != ""): ?>
-                                            target="<?php echo $child->getTarget(); ?>"
+                        	<?php $hasChildren = $child->hasPages() ?>
+   							<?php if (!$hasChildren): ?>
+                                <li><a <?php if ($child->isActive()) echo ' class="active"'?> href="<?php echo $child->getHref() ?>"
+                                    <?php if ($child->getTarget() != ""): ?>
+                                        target="<?php echo $child->getTarget(); ?>"
+                                    <?php endif; ?> >
+                                        <?php if ($child->get("icon") !== ""): ?>
+                                        <i class="sidebar-nav-icon <?php echo $child->get("icon"); ?>"></i>
+                                    <?php endif; ?>
+                                    <?php echo $child->getLabel() ?>
+                                </a></li>
+                            <?php else: ?>
+                            	<a href="#" class="sidebar-nav-submenu <?php if ($child->isActive(true)) echo 'open'?>"><i class="fa fa-chevron-left sidebar-nav-indicator"></i><?=$child->getLabel()?></a>
+								<ul>
+								<?php foreach ($child->getPages() as $subChild): ?>
+                                	<a <?php if ($subChild->isActive()) echo ' class="active"'?> href="<?php echo $subChild->getHref() ?>"
+										<?php if ($subChild->getTarget() != ""): ?>
+                                            target="<?php echo $subChild->getTarget(); ?>"
                                         <?php endif; ?> >
-                                            <?php if ($child->get("icon") !== ""): ?>
-                                            <i class="sidebar-nav-icon <?php echo $child->get("icon"); ?>"></i>
+                                            <?php if ($subChild->get("icon") !== ""): ?>
+                                            <i class="sidebar-nav-icon <?php echo $subChild->get("icon"); ?>"></i>
                                         <?php endif; ?>
-                                        <?php echo $child->getLabel() ?>
-                                    </a></li>
-                                <?php else: ?>
-                                	<a href="#" class="sidebar-nav-submenu <?php if ($child->isActive(true)) echo 'open'?>"><i class="fa fa-chevron-left sidebar-nav-indicator"></i><?=$child->getLabel()?></a>
-									<ul>
-									<?php foreach ($child->getPages() as $subChild): ?>
-                                    	<a <?php if ($subChild->isActive()) echo ' class="active"'?> href="<?php echo $subChild->getHref() ?>"
-											<?php if ($subChild->getTarget() != ""): ?>
-                                                target="<?php echo $subChild->getTarget(); ?>"
-                                            <?php endif; ?> >
-                                                <?php if ($subChild->get("icon") !== ""): ?>
-                                                <i class="sidebar-nav-icon <?php echo $subChild->get("icon"); ?>"></i>
-                                            <?php endif; ?>
-                                            <?php echo $subChild->getLabel() ?>
-                                        </a>
-                                    <?php endforeach; ?>
-                                   	</ul>
-                                <?php endif; ?>
-                            </li>
+                                        <?php echo $subChild->getLabel() ?>
+                                    </a>
+                                <?php endforeach; ?>
+                               	</ul>
+                            <?php endif; ?>
                         <?php endforeach ?>
                     </ul>
-                </li>   
+                </li>
             <?php endif; ?>
         <?php endif ?>
     <?php endforeach ?>

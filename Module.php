@@ -23,6 +23,8 @@ class Module
 
 		$sm = $e->getApplication()->getServiceManager();
 		$app = $e->getApplication();
+        $app->getEventManager()->attach('render', array($this, 'setLayoutTitle'));
+
         $app->getEventManager()->attach(
             'route',
             function($e) {
@@ -139,6 +141,40 @@ class Module
     public function getViewHelperConfig()
     {
 
+    }
+
+    /**
+     * @param  \Zend\Mvc\MvcEvent $e The MvcEvent instance
+     * @return void
+     */
+    public function setLayoutTitle($e)
+    {
+        $matches    = $e->getRouteMatch();
+
+        $action = $matches->getParam('action');
+        $action = str_replace('index', '', $action);
+        $action = trim($action);
+
+        $controller = $matches->getParam('controller');
+
+        $config = $e->getApplication()->getServiceManager()->get('Config');
+
+        $siteName = isset($config['canariumcore']['site_name']) ? $config['canariumcore']['site_name'] : 'Canarium Skeleton';
+
+        // Getting the view helper manager from the application service manager
+        $viewHelperManager = $e->getApplication()->getServiceManager()->get('viewHelperManager');
+
+        // Getting the headTitle helper from the view helper manager
+        $headTitleHelper   = $viewHelperManager->get('headTitle');
+
+        // Setting a separator string for segments
+        $headTitleHelper->setSeparator(' - ');
+
+        $headTitleHelper->append($siteName);
+        $headTitleHelper->append($controller);
+        if ($action) {
+            $headTitleHelper->append($action);
+        }
     }
 
 	public function selectLayoutBasedOnRoute(MvcEvent $e)

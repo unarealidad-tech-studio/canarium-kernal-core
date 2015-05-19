@@ -67,6 +67,17 @@ return array(
                 'role_entity_class' => 'CanariumCore\Entity\Role',
              ),
         ),
+
+        'guards' => array(
+            'BjyAuthorize\Guard\Controller' => array(
+                array('controller' => 'zfcuser', 'action'=>'login', 'roles' => array('guest')),
+                array('controller' => 'zfcuser', 'action'=>'logout', 'roles' => array('admin','owner','user','guest')),
+                array('controller' => 'zfcuser', 'action'=>'index', 'roles' => array('admin','owner','user')),
+                array('controller' => 'zfcuser', 'action'=>'register', 'roles' => array('guest')),
+                /* Admin */
+                array('controller' => 'Admin\CanariumCore', 'action'=>'index', 'roles' => array('admin','owner')),
+            ),
+        ),
     ),
 
 	'view_helpers' => array(

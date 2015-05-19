@@ -1,0 +1,7 @@
+<?php
+
+return array(
+    'canariumcore' => array(
+        'site_name' => 'Canarium Developer'
+    )
+);
