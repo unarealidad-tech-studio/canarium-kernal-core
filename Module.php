@@ -160,6 +160,7 @@ class Module
         $config = $e->getApplication()->getServiceManager()->get('Config');
 
         $siteName = isset($config['canariumcore']['site_name']) ? $config['canariumcore']['site_name'] : 'Canarium Skeleton';
+        $verboseTitle = isset($config['canariumcore']['verbose_title']) ? $config['canariumcore']['verbose_title'] : false;
 
         // Getting the view helper manager from the application service manager
         $viewHelperManager = $e->getApplication()->getServiceManager()->get('viewHelperManager');
@@ -171,9 +172,12 @@ class Module
         $headTitleHelper->setSeparator(' - ');
 
         $headTitleHelper->append($siteName);
-        $headTitleHelper->append($controller);
-        if ($action) {
-            $headTitleHelper->append($action);
+
+        if ($verboseTitle) {
+            $headTitleHelper->append($controller);
+            if ($action) {
+                $headTitleHelper->append($action);
+            }
         }
     }
 
