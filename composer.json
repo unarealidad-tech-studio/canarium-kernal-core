@@ -35,11 +35,9 @@
         "zendframework/zendservice-recaptcha": "*",
         "webino/webino-image-thumb": "dev-master",
         "zf-commons/zfc-user-doctrine-orm": "1.0.0",
-        "zendframework/zftool": "dev-master",
         "google/apiclient": "1.0.*@beta",
         "beberlei/DoctrineExtensions": "dev-master",
         "gedmo/doctrine-extensions": "2.3.*",
-        "zendframework/zend-developer-tools": "dev-master@dev",
         "canarium/canarium-libraries/error-handler" : "dev-master",
         "canarium/canarium-libraries/goalio-mail-service" : "dev-master",
         "canarium/canarium-libraries/google-sso" : "dev-master",
@@ -51,7 +49,17 @@
 
     "require-dev": {
         "phpunit/phpunit":                  "~3.7.5",
-        "phpunit/php-invoker":              "1.1.*"
+        "phpunit/php-invoker":              "1.1.*",
+        "bjyoungblood/bjy-profiler":        "dev-master",
+        "zendframework/zftool":             "dev-master",
+        "zendframework/zend-developer-tools": "dev-master",
+        "zfcampus/zf-apigility-admin":      "dev-master",
+        "zfcampus/zf-apigility-doctrine":   "dev-master",
+        "ocramius/ocra-service-manager":    "dev-master",
+        "san/san-session-toolbar":          "dev-master",
+        "snapshotpl/zf-snap-event-debugger": "dev-master",
+        "jhuet/zdt-logger-module":          "dev-master",
+        "aist/aist-git-tools dev-master":   "dev-master"
     },
 
     "repositories": [

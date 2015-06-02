@@ -2,6 +2,8 @@
 
 return array(
     'canariumcore' => array(
-        'site_name' => 'Canarium Developer'
+        'site_name'                  => 'Skeleton Application',
+        'verbose_title'              => false,
+        'is_authentication_required' => false,
     )
 );

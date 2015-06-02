@@ -25,41 +25,15 @@ class Module
 		$app = $e->getApplication();
         $app->getEventManager()->attach('render', array($this, 'setLayoutTitle'));
 
-        $app->getEventManager()->attach(
-            'route',
-            function($e) {
-                $app = $e->getApplication();
-                $routeMatch = $e->getRouteMatch();
-                $sm = $app->getServiceManager();
-                $auth = $sm->get('zfcuser_auth_service');
-                if (!$auth->hasIdentity() && $routeMatch->getMatchedRouteName() != 'zfcuser/login' && $routeMatch->getMatchedRouteName() != 'zfcuser/register') {
-            //GENERATE THE URL FROM CURRENT ROUTE (YOUR blog ONE)
-            $redirect = $e->getRouter()->assemble(
-                $routeMatch->getParams(),
-                array(
-                    'name' => $routeMatch->getMatchedRouteName(),
-                )
+        $config = $sm->get('canariumcore_module_options');
+
+        if ($config->getIsAuthenticationRequired()) {
+            $app->getEventManager()->attach(
+                'route',
+                array($this, 'checkIfAuthenticated'),
+                -100
             );
-                    $response = $e->getResponse();
-                    $response->getHeaders()->addHeaderLine(
-                        'Location',
-                        $e->getRouter()->assemble(
-                                array(),
-                                array('name' => 'zfcuser/login')
-
-                        )
-                    );
-                    $response->setStatusCode(302);
-                    return $response;
-                }
-
-                if ($routeMatch->getMatchedRouteName() == 'zfcuser/login' || $routeMatch->getMatchedRouteName() == 'zfcuser/register') {
-                    $e->getViewModel()->setTemplate('layout/login');
-                }
-
-            },
-            -100
-        );
+        }
 
 		$userService = $sm->get('zfcuser_user_service');
 		$userService->getEventManager()->attach('register.post',
@@ -149,7 +123,11 @@ class Module
      */
     public function setLayoutTitle($e)
     {
-        $matches    = $e->getRouteMatch();
+        $matches = $e->getRouteMatch();
+
+        if (!$matches) {
+            return;
+        }
 
         $action = $matches->getParam('action');
         $action = str_replace('index', '', $action);
@@ -157,10 +135,7 @@ class Module
 
         $controller = $matches->getParam('controller');
 
-        $config = $e->getApplication()->getServiceManager()->get('Config');
-
-        $siteName = isset($config['canariumcore']['site_name']) ? $config['canariumcore']['site_name'] : 'Canarium Skeleton';
-        $verboseTitle = isset($config['canariumcore']['verbose_title']) ? $config['canariumcore']['verbose_title'] : false;
+        $config = $e->getApplication()->getServiceManager()->get('canariumcore_module_options');
 
         // Getting the view helper manager from the application service manager
         $viewHelperManager = $e->getApplication()->getServiceManager()->get('viewHelperManager');
@@ -171,14 +146,64 @@ class Module
         // Setting a separator string for segments
         $headTitleHelper->setSeparator(' - ');
 
-        $headTitleHelper->append($siteName);
+        $headTitleHelper->append($config->getSiteName());
 
-        if ($verboseTitle) {
+        if ($config->getVerboseTitle()) {
             $headTitleHelper->append($controller);
             if ($action) {
                 $headTitleHelper->append($action);
             }
         }
+    }
+
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'canariumcore_module_options' => function ($sm) {
+                    $config = $sm->get('Config');
+                    return new Options\ModuleOptions(isset($config['canariumcore']) ? $config['canariumcore'] : array());
+                }
+            )
+        );
+    }
+
+    /* Helpers*/
+
+    public function checkIfAuthenticated($e)
+    {
+        $app = $e->getApplication();
+        $routeMatch = $e->getRouteMatch();
+        $sm = $app->getServiceManager();
+        $auth = $sm->get('zfcuser_auth_service');
+
+        if (!$auth->hasIdentity() && $routeMatch->getMatchedRouteName() != 'zfcuser/login' && $routeMatch->getMatchedRouteName() != 'zfcuser/register') {
+
+            //GENERATE THE URL FROM CURRENT ROUTE (YOUR blog ONE)
+            $redirect = $e->getRouter()->assemble(
+                $routeMatch->getParams(),
+                array(
+                    'name' => $routeMatch->getMatchedRouteName(),
+                )
+            );
+
+            $response = $e->getResponse();
+            $response->getHeaders()->addHeaderLine(
+                'Location',
+                $e->getRouter()->assemble(
+                        array(),
+                        array('name' => 'zfcuser/login')
+
+                )
+            );
+            $response->setStatusCode(302);
+            return $response;
+        }
+
+        if ($routeMatch->getMatchedRouteName() == 'zfcuser/login' || $routeMatch->getMatchedRouteName() == 'zfcuser/register') {
+            $e->getViewModel()->setTemplate('layout/login');
+        }
+
     }
 
 	public function selectLayoutBasedOnRoute(MvcEvent $e)
