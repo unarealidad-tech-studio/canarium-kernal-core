@@ -27,7 +27,7 @@
 
     "require": {
         "php"                               : ">=5.3.23",
-        "doctrine/doctrine-orm-module"      : "0.9.*",
+        "doctrine/doctrine-orm-module"      : "0.8.*",
         "zendframework/zendframework"       : "2.4.*",
         "zf-commons/zfc-user": "1.1.0",
         "bjyoungblood/bjy-authorize": "dev-master",
