@@ -23,7 +23,7 @@
         "email":    "jethro.laviste@unarealidad.com"
     },
 
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
 
     "require": {
         "php"                               : ">=5.3.23",
@@ -38,6 +38,7 @@
         "google/apiclient": "1.0.*@beta",
         "beberlei/DoctrineExtensions": "dev-master",
         "gedmo/doctrine-extensions": "2.3.*",
+        "zfcampus/zf-apigility": "dev-master",
         "canarium/canarium-libraries/error-handler" : "dev-master",
         "canarium/canarium-libraries/goalio-mail-service" : "dev-master",
         "canarium/canarium-libraries/google-sso" : "dev-master",
@@ -51,6 +52,10 @@
         {
             "type": "composer",
             "url": "http://packages.canarium.ph"
+        },
+        {
+            "type": "composer",
+            "url": "https://packages.zendframework.com"
         }
     ],
 
