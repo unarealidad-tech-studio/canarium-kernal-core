@@ -97,6 +97,7 @@ return array(
 
         'guards' => array(
             'BjyAuthorize\Guard\Controller' => array(
+                array('controller' => 'zfcuser', 'roles' => array('user', 'admin')),
                 array('controller' => 'zfcuser', 'action'=>'login', 'roles' => array('guest')),
                 array('controller' => 'zfcuser', 'action'=>'logout', 'roles' => array('admin','owner','user','guest')),
                 array('controller' => 'zfcuser', 'action'=>'index', 'roles' => array('admin','owner','user')),
