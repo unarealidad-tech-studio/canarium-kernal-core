@@ -27,6 +27,9 @@ class Module
 
         $config = $sm->get('canariumcore_module_options');
 
+        $viewModel = $e->getApplication()->getMvcEvent()->getViewModel();
+        $viewModel->site_name = $config->getSiteName();
+
         if ($config->getIsAuthenticationRequired()) {
             $app->getEventManager()->attach(
                 'route',
