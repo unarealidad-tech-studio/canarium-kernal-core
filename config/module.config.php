@@ -103,6 +103,10 @@ return array(
                 array('controller' => 'zfcuser', 'action'=>'index', 'roles' => array('admin','owner','user')),
                 array('controller' => 'zfcuser', 'action'=>'register', 'roles' => array('guest')),
 
+                array('controller' => 'ZF\Apigility\Admin\Controller\Dashboard', 'roles' => array('admin')),
+                array('controller' => 'ZF\Apigility\Admin\Controller\App', 'roles' => array('admin')),
+
+
                 array('controller' => 'CanariumCore\Controller\Index', 'roles' => array('admin','owner', 'guest')),
                 array('controller' => 'User', 'roles' => array('admin','owner')),
                 array('controller' => 'Admin\CanariumCore', 'roles' => array('admin','owner')),
@@ -233,6 +237,7 @@ return array(
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
             'Zend\Log\LoggerAbstractServiceFactory',
+            'Zend\Db\Adapter\AdapterAbstractServiceFactory',
         ),
         'aliases' => array(
             'translator' => 'MvcTranslator',

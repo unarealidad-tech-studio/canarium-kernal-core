@@ -13,6 +13,9 @@ use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\ModuleManager\ModuleManager;
 use Zend\Mvc\Router\Http\RouteMatch;
+
+use BjyAuthorize\View\RedirectionStrategy;
+
 class Module
 {
     public function onBootstrap(MvcEvent $e)
@@ -23,6 +26,10 @@ class Module
 
 		$sm = $e->getApplication()->getServiceManager();
 		$app = $e->getApplication();
+
+        $strategy = new RedirectionStrategy();
+        $eventManager->attach($strategy);
+
         $app->getEventManager()->attach('render', array($this, 'setLayoutTitle'));
 
         $config = $sm->get('canariumcore_module_options');

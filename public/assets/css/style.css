@@ -6479,3 +6479,7 @@ different theme layout
 	height: auto;
 	border: 1px solid #D9D9D9;
 }
+
+.zdt-toolbar-detail .zdt-toolbar-info .xdebug-var-dump {
+	color: #fff;
+}
