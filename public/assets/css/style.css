@@ -216,6 +216,10 @@ h1,h2,h3,h4,h5 {
 	margin-right: 10px;
 }
 
+.logo a img {
+    width: 60px;
+}
+
 .icon-logo {
 	display: none;
 }
@@ -460,7 +464,7 @@ h5.left-nav-title {
 }
 
 .sidebar-collapsed .side-navigation li a {
-	text-align: center;
+	/*text-align: center;*/
 	padding:15px 10px;
 	position: relative;
 }
@@ -620,6 +624,7 @@ h5.left-nav-title {
 	left: 0;
 	width: 240px;
 	z-index: 100;
+    text-align: center;
 }
 
 .sticky-header .sidebar-left {
