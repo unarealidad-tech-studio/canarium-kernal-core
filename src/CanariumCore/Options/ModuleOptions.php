@@ -12,6 +12,8 @@ class ModuleOptions extends AbstractOptions
 
     protected $is_authentication_required = false;
 
+    protected $login_on_denied_access = true;
+
     public function setSiteName($site_name)
     {
         $this->site_name = $site_name;
@@ -43,6 +45,24 @@ class ModuleOptions extends AbstractOptions
     public function getIsAuthenticationRequired()
     {
         return $this->is_authentication_required;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isLoginOnDeniedAccess()
+    {
+        return $this->login_on_denied_access;
+    }
+
+    /**
+     * @param $login_on_denied_access
+     * @return $this
+     */
+    public function setLoginOnDeniedAccess($login_on_denied_access)
+    {
+        $this->login_on_denied_access = $login_on_denied_access;
+        return $this;
     }
 
 }

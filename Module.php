@@ -27,12 +27,14 @@ class Module
 		$sm = $e->getApplication()->getServiceManager();
 		$app = $e->getApplication();
 
-        $strategy = new RedirectionStrategy();
-        $eventManager->attach($strategy);
+        $config = $sm->get('canariumcore_module_options');
+
+        if ($config->isLoginOnDeniedAccess()) {
+            $strategy = new RedirectionStrategy();
+            $eventManager->attach($strategy);
+        }
 
         $app->getEventManager()->attach('render', array($this, 'setLayoutTitle'));
-
-        $config = $sm->get('canariumcore_module_options');
 
         $viewModel = $e->getApplication()->getMvcEvent()->getViewModel();
         $viewModel->site_name = $config->getSiteName();
