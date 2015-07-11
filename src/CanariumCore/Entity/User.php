@@ -18,7 +18,12 @@ use ZfcUser\Entity\UserInterface;
  *
  * @ORM\Entity
  * @ORM\Table(name="user")
- *
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({
+ *     "user" = "\CanariumCore\Entity\User",
+ *     "projectuser" = "\Project\Entity\User"
+ * })
  * @author Tom Oram <tom@scl.co.uk>
  */
 class User implements UserInterface, ProviderInterface
