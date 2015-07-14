@@ -16,7 +16,9 @@ use Zend\Mvc\Router\Http\RouteMatch;
 
 use BjyAuthorize\View\RedirectionStrategy;
 
-class Module
+use ZF\Apigility\Provider\ApigilityProviderInterface;
+
+class Module implements ApigilityProviderInterface
 {
     public function onBootstrap(MvcEvent $e)
     {

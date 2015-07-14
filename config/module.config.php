@@ -1,339 +1,741 @@
 <?php
-
 return array(
-	'zfcuser' => array(
-        'UserEntityClass' => '\CanariumCore\Entity\User',
+    'zfcuser' => array(
+        'UserEntityClass' => '\\CanariumCore\\Entity\\User',
         'EnableDefaultEntities' => false,
-
-		'user_entity_class' => '\CanariumCore\Entity\User',
-		'enable_default_entities' => false,
-        'auth_adapters' => array( 100 => 'ZfcUser\Authentication\Adapter\Db' ),
+        'user_entity_class' => '\\CanariumCore\\Entity\\User',
+        'enable_default_entities' => false,
+        'auth_adapters' => array(
+            100 => 'ZfcUser\\Authentication\\Adapter\\Db',
+        ),
         'use_redirect_parameter_if_present' => true,
     ),
-
-	'doctrine' => array(
-		'configuration' => array(
+    'doctrine' => array(
+        'configuration' => array(
             'orm_default' => array(
-				'datetime_functions' => array(
-					'REGEXP'  => 'DoctrineExtensions\Query\Mysql\Regexp',
-					'DATEDIFF'  => 'DoctrineExtensions\Query\Mysql\DateDiff',
-					'DAY'  => 'DoctrineExtensions\Query\Mysql\Day',
-					'WEEK'  => 'DoctrineExtensions\Query\Mysql\Week',
-					'MONTH'  => 'DoctrineExtensions\Query\Mysql\Month',
-					'YEAR'  => 'DoctrineExtensions\Query\Mysql\Year',
-					'CONCAT_WS' => 'DoctrineExtensions\Query\Mysql\ConcatWs',
-				),
-				'string_functions' => array(
-					'FIELD' => 'DoctrineExtensions\Query\Mysql\Field',
-				),
-			)
-		),
-        'driver' => array(
-            'zfcuser_driver' =>array(
-                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                 'cache' => 'array',
-                 'paths' => array(__DIR__ .'/../src/CanariumCore/Entity')
-            ),
-
-            'orm_default' =>array(
-                'drivers' => array(
-                    'CanariumCore\Entity'  =>  'zfcuser_driver',
-					'Gedmo\Loggable\Entity' => 'loggable_driver',
+                'datetime_functions' => array(
+                    'REGEXP' => 'DoctrineExtensions\\Query\\Mysql\\Regexp',
+                    'DATEDIFF' => 'DoctrineExtensions\\Query\\Mysql\\DateDiff',
+                    'DAY' => 'DoctrineExtensions\\Query\\Mysql\\Day',
+                    'WEEK' => 'DoctrineExtensions\\Query\\Mysql\\Week',
+                    'MONTH' => 'DoctrineExtensions\\Query\\Mysql\\Month',
+                    'YEAR' => 'DoctrineExtensions\\Query\\Mysql\\Year',
+                    'CONCAT_WS' => 'DoctrineExtensions\\Query\\Mysql\\ConcatWs',
                 ),
-            ),
-			'loggable_driver' => array(
-                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                'cache' => 'array',
-                'paths' => array(
-                    'vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity',
+                'string_functions' => array(
+                    'FIELD' => 'DoctrineExtensions\\Query\\Mysql\\Field',
                 ),
-            ),
-        )
-    ),
-
-	'bjyauthorize' => array(
-        'default_role' => 'guest',
-        'authenticated_role' => 'user',
-        // Using the authentication identity provider, which basically reads the roles from the auth service's identity
-        'identity_provider' => 'BjyAuthorize\Provider\Identity\AuthenticationIdentityProvider',
-
-        'role_providers'        => array(
-            // using an object repository (entity repository) to load all roles into our ACL
-            'BjyAuthorize\Provider\Role\ObjectRepositoryProvider' => array(
-                'object_manager'    => 'doctrine.entitymanager.orm_default',
-                'role_entity_class' => 'CanariumCore\Entity\Role',
-             ),
-            'BjyAuthorize\Provider\Role\Config' => array(
-                'guest' => array(),
-                'user'  => array('children' => array(
-                    'admin' => array(),
-                )),
             ),
         ),
-
+        'driver' => array(
+            'zfcuser_driver' => array(
+                'class' => 'Doctrine\\ORM\\Mapping\\Driver\\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(
+                    0 => __DIR__ . '/../src/CanariumCore/Entity',
+                ),
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    'CanariumCore\\Entity' => 'zfcuser_driver',
+                    'Gedmo\\Loggable\\Entity' => 'loggable_driver',
+                ),
+            ),
+            'loggable_driver' => array(
+                'class' => 'Doctrine\\ORM\\Mapping\\Driver\\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(
+                    0 => 'vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity',
+                ),
+            ),
+        ),
+    ),
+    'bjyauthorize' => array(
+        'default_role' => 'guest',
+        'authenticated_role' => 'user',
+        'identity_provider' => 'BjyAuthorize\\Provider\\Identity\\AuthenticationIdentityProvider',
+        'role_providers' => array(
+            'BjyAuthorize\\Provider\\Role\\ObjectRepositoryProvider' => array(
+                'object_manager' => 'doctrine.entitymanager.orm_default',
+                'role_entity_class' => 'CanariumCore\\Entity\\Role',
+            ),
+            'BjyAuthorize\\Provider\\Role\\Config' => array(
+                'guest' => array(),
+                'user' => array(
+                    'children' => array(
+                        'admin' => array(),
+                    ),
+                ),
+            ),
+        ),
         'resource_providers' => array(
-            'BjyAuthorize\Provider\Resource\Config' => array(
+            'BjyAuthorize\\Provider\\Resource\\Config' => array(
                 'admin' => array(),
                 'owner' => array(),
             ),
         ),
-
         'rule_providers' => array(
-            'BjyAuthorize\Provider\Rule\Config' => array(
+            'BjyAuthorize\\Provider\\Rule\\Config' => array(
                 'allow' => array(
-                    // allow guests and users (and admins, through inheritance)
-                    // the "wear" privilege on the resource "pants"
-                    array(array('admin'), 'admin', array()),
-                    array(array('owner'), 'owner', array()),
+                    0 => array(
+                        0 => array(
+                            0 => 'admin',
+                        ),
+                        1 => 'admin',
+                        2 => array(),
+                    ),
+                    1 => array(
+                        0 => array(
+                            0 => 'owner',
+                        ),
+                        1 => 'owner',
+                        2 => array(),
+                    ),
                 ),
-
-                // Don't mix allow/deny rules if you are using role inheritance.
-                // There are some weird bugs.
-                'deny' => array(
-                    // ...
-                ),
+                'deny' => array(),
             ),
         ),
-
         'guards' => array(
-            'BjyAuthorize\Guard\Controller' => array(
-                array('controller' => 'zfcuser', 'roles' => array('user', 'admin')),
-                array('controller' => 'zfcuser', 'action'=>'login', 'roles' => array('guest')),
-                array('controller' => 'zfcuser', 'action'=>'logout', 'roles' => array('admin','owner','user','guest')),
-                array('controller' => 'zfcuser', 'action'=>'index', 'roles' => array('admin','owner','user')),
-                array('controller' => 'zfcuser', 'action'=>'register', 'roles' => array('guest')),
-
-                array('controller' => 'ZF\Apigility\Doctrine\Admin\Controller\DoctrineMetadataService', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Doctrine\Admin\Controller\DoctrineRestService', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Doctrine\Admin\Controller\DoctrineAutodiscovery', 'roles' => array('admin')),
-
-                array('controller' => 'ZF\Apigility\Documentation\Controller', 'roles' => array('admin')),
-
-                array('controller' => 'ZF\OAuth2\Controller\Auth', 'roles' => array('admin')),
-
-                array('controller' => 'ZF\Apigility\Admin\Controller\Module', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\Dashboard', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\App', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\ModuleCreation', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\AuthenticationType', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\RpcService', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\Authentication', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\RestService', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\DbAdapter', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\DoctrineAdapter', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\Source', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\ContentNegotiation', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\Hydrators', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\Authorization', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\InputFilter', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\Validators', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\Filters', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\Documentation', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\App', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\CacheEnabled', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\FsPermissions', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\Strategy', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\Package', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\AuthenticationType', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\DbAutodiscovery', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\Dashboard', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\Documentation', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\Filters', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\Hydrators', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\InputFilter', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\SettingsDashboard', 'roles' => array('admin')),
-                array('controller' => 'ZF\Apigility\Admin\Controller\Validators', 'roles' => array('admin')),
-
-                array('controller' => 'CanariumCore\Controller\Index', 'roles' => array('admin','owner', 'guest')),
-                array('controller' => 'User', 'roles' => array('admin','owner')),
-                array('controller' => 'Admin\CanariumCore', 'roles' => array('admin','owner')),
-            ),
-        ),
-    ),
-
-	'view_helpers' => array(
-      'invokables' => array(
-         'url_title_filter' => 'CanariumCore\View\Helper\Filter\Url',
-      ),
-   ),
-
-	'controllers' => array(
-        'invokables' => array(
-            'CanariumCore\Controller\Index' => 'CanariumCore\Controller\IndexController',
-			'Admin\CanariumCore' 	=> 'CanariumCore\Controller\AdminController',
-			'User' 				=> 'CanariumCore\Controller\UserController',
-			'zfcuser' 	=> 'CanariumCore\Controller\UserController',
-        ),
-    ),
-
-    'router' => array(
-        'routes' => array(
-            'home' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/',
-                    'defaults' => array(
-                        'controller' => 'CanariumCore\Controller\Index',
-                        'action'     => 'index',
+            'BjyAuthorize\\Guard\\Controller' => array(
+                0 => array(
+                    'controller' => 'zfcuser',
+                    'roles' => array(
+                        0 => 'user',
+                        1 => 'admin',
+                    ),
+                ),
+                1 => array(
+                    'controller' => 'zfcuser',
+                    'action' => 'login',
+                    'roles' => array(
+                        0 => 'guest',
+                    ),
+                ),
+                2 => array(
+                    'controller' => 'zfcuser',
+                    'action' => 'logout',
+                    'roles' => array(
+                        0 => 'admin',
+                        1 => 'owner',
+                        2 => 'user',
+                        3 => 'guest',
+                    ),
+                ),
+                3 => array(
+                    'controller' => 'zfcuser',
+                    'action' => 'index',
+                    'roles' => array(
+                        0 => 'admin',
+                        1 => 'owner',
+                        2 => 'user',
+                    ),
+                ),
+                4 => array(
+                    'controller' => 'zfcuser',
+                    'action' => 'register',
+                    'roles' => array(
+                        0 => 'guest',
+                    ),
+                ),
+                5 => array(
+                    'controller' => 'ZF\\Apigility\\Doctrine\\Admin\\Controller\\DoctrineMetadataService',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                6 => array(
+                    'controller' => 'ZF\\Apigility\\Doctrine\\Admin\\Controller\\DoctrineRestService',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                7 => array(
+                    'controller' => 'ZF\\Apigility\\Doctrine\\Admin\\Controller\\DoctrineAutodiscovery',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                8 => array(
+                    'controller' => 'ZF\\Apigility\\Documentation\\Controller',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                9 => array(
+                    'controller' => 'ZF\\OAuth2\\Controller\\Auth',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                10 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\Module',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                11 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\Dashboard',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                12 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\App',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                13 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\ModuleCreation',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                14 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\AuthenticationType',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                15 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\RpcService',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                16 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\Authentication',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                17 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\RestService',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                18 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\DbAdapter',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                19 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\DoctrineAdapter',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                20 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\Source',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                21 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\ContentNegotiation',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                22 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\Hydrators',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                23 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\Authorization',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                24 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\InputFilter',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                25 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\Validators',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                26 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\Filters',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                27 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\Documentation',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                28 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\App',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                29 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\CacheEnabled',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                30 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\FsPermissions',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                31 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\Strategy',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                32 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\Package',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                33 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\AuthenticationType',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                34 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\DbAutodiscovery',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                35 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\Dashboard',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                36 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\Documentation',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                37 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\Filters',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                38 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\Hydrators',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                39 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\InputFilter',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                40 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\SettingsDashboard',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                41 => array(
+                    'controller' => 'ZF\\Apigility\\Admin\\Controller\\Validators',
+                    'roles' => array(
+                        0 => 'admin',
+                    ),
+                ),
+                42 => array(
+                    'controller' => 'CanariumCore\\Controller\\Index',
+                    'roles' => array(
+                        0 => 'admin',
+                        1 => 'owner',
+                        2 => 'guest',
+                    ),
+                ),
+                43 => array(
+                    'controller' => 'User',
+                    'roles' => array(
+                        0 => 'admin',
+                        1 => 'owner',
+                    ),
+                ),
+                44 => array(
+                    'controller' => 'Admin\\CanariumCore',
+                    'roles' => array(
+                        0 => 'admin',
+                        1 => 'owner',
+                    ),
+                ),
+                45 => array(
+                    'controller' => 'CanariumCore\\V1\\Rest\\User\\Controller',
+                    'roles' => array(
+                        0 => 'admin',
+                        1 => 'owner',
                     ),
                 ),
             ),
-            // The following is a route to simplify getting started creating
-            // new controllers and actions without needing to create a new
-            // module. Simply drop new controllers in, and you can access them
-            // using the path /application/:controller/:action
-            'canarium-core' => array(
-                'type'    => 'Literal',
+        ),
+    ),
+    'view_helpers' => array(
+        'invokables' => array(
+            'url_title_filter' => 'CanariumCore\\View\\Helper\\Filter\\Url',
+        ),
+    ),
+    'controllers' => array(
+        'invokables' => array(
+            'CanariumCore\\Controller\\Index' => 'CanariumCore\\Controller\\IndexController',
+            'Admin\\CanariumCore' => 'CanariumCore\\Controller\\AdminController',
+            'User' => 'CanariumCore\\Controller\\UserController',
+            'zfcuser' => 'CanariumCore\\Controller\\UserController',
+        ),
+    ),
+    'router' => array(
+        'routes' => array(
+            'home' => array(
+                'type' => 'Zend\\Mvc\\Router\\Http\\Literal',
                 'options' => array(
-                    'route'    => '/canarium-core',
+                    'route' => '/',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'CanariumCore\Controller',
-                        'controller'    => 'Index',
-                        'action'        => 'index',
+                        'controller' => 'CanariumCore\\Controller\\Index',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
+            'canarium-core' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/canarium-core',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'CanariumCore\\Controller',
+                        'controller' => 'Index',
+                        'action' => 'index',
                     ),
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
                     'default' => array(
-                        'type'    => 'Segment',
+                        'type' => 'Segment',
                         'options' => array(
-                            'route'    => '/[:controller[/:action]]',
+                            'route' => '/[:controller[/:action]]',
                             'constraints' => array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                             ),
-                            'defaults' => array(
-                            ),
+                            'defaults' => array(),
                         ),
                     ),
                 ),
             ),
-
-			'admin' => array(
-                'type'    => 'Literal',
+            'admin' => array(
+                'type' => 'Literal',
                 'options' => array(
-                    'route'    => '/admin',
+                    'route' => '/admin',
                     'defaults' => array(
-                        'controller'    => 'Admin\CanariumCore',
-                        'action'        => 'index',
+                        'controller' => 'Admin\\CanariumCore',
+                        'action' => 'index',
                     ),
                 ),
                 'may_terminate' => true,
-                'child_routes' => array(
-                ),
+                'child_routes' => array(),
             ),
-
-			'oauth2callback' => array(
-                'type'    => 'Literal',
+            'oauth2callback' => array(
+                'type' => 'Literal',
                 'options' => array(
-                    'route'    => '/oauth2callback',
+                    'route' => '/oauth2callback',
                     'defaults' => array(
-                        'controller'    => 'CanariumCore\Controller\Index',
-                        'action'        => 'oauth2callback',
+                        'controller' => 'CanariumCore\\Controller\\Index',
+                        'action' => 'oauth2callback',
                     ),
                 ),
                 'may_terminate' => true,
             ),
-
-			'zfcuser' => array(
+            'zfcuser' => array(
                 'type' => 'Segment',
                 'priority' => 1000,
                 'options' => array(
                     'route' => '/user',
                     'defaults' => array(
                         'controller' => 'zfcuser',
-                        'action'     => 'index',
+                        'action' => 'index',
                     ),
                 ),
                 'may_terminate' => true,
-				'child_routes' => array(
+                'child_routes' => array(
                     'updateprofile' => array(
                         'type' => 'Literal',
                         'options' => array(
                             'route' => '/update-profile',
                             'defaults' => array(
                                 'controller' => 'zfcuser',
-                                'action'     => 'update-profile',
+                                'action' => 'update-profile',
                             ),
                         ),
                     ),
-				),
-			),
-
-
+                ),
+            ),
+            'canarium-core.rest.doctrine.user' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/api/user[/:user_id]',
+                    'defaults' => array(
+                        'controller' => 'CanariumCore\\V1\\Rest\\User\\Controller',
+                    ),
+                ),
+            ),
         ),
     ),
     'db' => array(
-        'driver'         => 'Pdo',
-        'dsn'            => 'mysql:dbname=skeleton;host=localhost',
+        'driver' => 'Pdo',
+        'dsn' => 'mysql:dbname=skeleton;host=localhost',
         'driver_options' => array(
-            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
+            1002 => 'SET NAMES \'UTF8\'',
         ),
     ),
     'service_manager' => array(
         'abstract_factories' => array(
-            'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
-            'Zend\Log\LoggerAbstractServiceFactory',
-            'Zend\Db\Adapter\AdapterAbstractServiceFactory',
+            0 => 'Zend\\Cache\\Service\\StorageCacheAbstractServiceFactory',
+            1 => 'Zend\\Log\\LoggerAbstractServiceFactory',
+            2 => 'Zend\\Db\\Adapter\\AdapterAbstractServiceFactory',
         ),
         'aliases' => array(
             'translator' => 'MvcTranslator',
-            'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter'
+            'zfcuser_zend_db_adapter' => 'Zend\\Db\\Adapter\\Adapter',
         ),
-		'factories' => array(
-			'admin' => 'CanariumCore\Navigation\Service\AdminNavigationFactory',
-			'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
-             'Zend\Db\Adapter\Adapter'
-                    => 'Zend\Db\Adapter\AdapterServiceFactory'
-		),
+        'factories' => array(
+            'admin' => 'CanariumCore\\Navigation\\Service\\AdminNavigationFactory',
+            'navigation' => 'Zend\\Navigation\\Service\\DefaultNavigationFactory',
+            'Zend\\Db\\Adapter\\Adapter' => 'Zend\\Db\\Adapter\\AdapterServiceFactory',
+        ),
     ),
     'translator' => array(
         'locale' => 'en_US',
         'translation_file_patterns' => array(
-            array(
-                'type'     => 'gettext',
+            0 => array(
+                'type' => 'gettext',
                 'base_dir' => __DIR__ . '/../language',
-                'pattern'  => '%s.mo',
+                'pattern' => '%s.mo',
             ),
         ),
     ),
-
     'view_manager' => array(
-		'strategies' => array(
-           'ViewJsonStrategy',
+        'strategies' => array(
+            0 => 'ViewJsonStrategy',
         ),
         'display_not_found_reason' => true,
-        'display_exceptions'       => true,
-        'doctype'                  => 'HTML5',
-        'not_found_template'       => 'error/404',
-        'exception_template'       => 'error/index',
+        'display_exceptions' => true,
+        'doctype' => 'HTML5',
+        'not_found_template' => 'error/404',
+        'exception_template' => 'error/index',
         'template_map' => array(
-			'layout/admin'           => __DIR__ . '/../view/layout/admin.phtml',
-            'error/index'             => __DIR__ . '/../view/error/index.phtml',
-			'partial/paginator' => __DIR__ . '/../view/partial/paginator.phtml',
+            'layout/admin' => __DIR__ . '/../view/layout/admin.phtml',
+            'error/index' => __DIR__ . '/../view/error/index.phtml',
+            'partial/paginator' => __DIR__ . '/../view/partial/paginator.phtml',
         ),
         'template_path_stack' => array(
-            __DIR__ . '/../view',
+            0 => __DIR__ . '/../view',
         ),
     ),
-    // Placeholder for console routes
     'console' => array(
         'router' => array(
-            'routes' => array(
+            'routes' => array(),
+        ),
+    ),
+    'jhu' => array(
+        'zdt_logger' => array(
+            'logger' => 'Zend\\Log\\Logger',
+        ),
+    ),
+    'zf-versioning' => array(
+        'uri' => array(
+            0 => 'canarium-core.rest.doctrine.user',
+        ),
+    ),
+    'zf-rest' => array(
+        'CanariumCore\\V1\\Rest\\User\\Controller' => array(
+            'listener' => 'CanariumCore\\V1\\Rest\\User\\UserResource',
+            'route_name' => 'canarium-core.rest.doctrine.user',
+            'route_identifier_name' => 'user_id',
+            'entity_identifier_name' => 'id',
+            'collection_name' => 'user',
+            'entity_http_methods' => array(
+                0 => 'GET',
+                1 => 'PATCH',
+                2 => 'PUT',
+                3 => 'DELETE',
+            ),
+            'collection_http_methods' => array(
+                0 => 'GET',
+                1 => 'POST',
+            ),
+            'collection_query_whitelist' => array(),
+            'page_size' => 25,
+            'page_size_param' => 'limit',
+            'entity_class' => 'CanariumCore\\Entity\\User',
+            'collection_class' => 'CanariumCore\\V1\\Rest\\User\\UserCollection',
+            'service_name' => 'User',
+        ),
+    ),
+    'zf-content-negotiation' => array(
+        'controllers' => array(
+            'CanariumCore\\V1\\Rest\\User\\Controller' => 'HalJson',
+        ),
+        'accept-whitelist' => array(
+            'CanariumCore\\V1\\Rest\\User\\Controller' => array(
+                0 => 'application/vnd.canarium-core.v1+json',
+                1 => 'application/hal+json',
+                2 => 'application/json',
+            ),
+        ),
+        'content-type-whitelist' => array(
+            'CanariumCore\\V1\\Rest\\User\\Controller' => array(
+                0 => 'application/json',
             ),
         ),
     ),
-    //jhu-zdt-logger
-    'jhu' => array(
-        'zdt_logger' => array(
-            /**
-             * The logger that will be used. This module will only add a writer to it
-             * so if you already have a logger in your application, you can set it here.
-             *
-             * The logger you'll set here has to be available thru the service manager
-             * and be an instance or extend Zend\Log\Logger.
-             */
-            'logger' => 'Zend\Log\Logger'
-        )
-    )
+    'zf-hal' => array(
+        'metadata_map' => array(
+            'CanariumCore\\Entity\\User' => array(
+                'route_identifier_name' => 'user_id',
+                'entity_identifier_name' => 'id',
+                'route_name' => 'canarium-core.rest.doctrine.user',
+                'hydrator' => 'CanariumCore\\V1\\Rest\\User\\UserHydrator',
+            ),
+            'CanariumCore\\V1\\Rest\\User\\UserCollection' => array(
+                'entity_identifier_name' => 'id',
+                'route_name' => 'canarium-core.rest.doctrine.user',
+                'is_collection' => true,
+            ),
+        ),
+    ),
+    'zf-apigility' => array(
+        'doctrine-connected' => array(
+            'CanariumCore\\V1\\Rest\\User\\UserResource' => array(
+                'object_manager' => 'doctrine.entitymanager.orm_default',
+                'hydrator' => 'CanariumCore\\V1\\Rest\\User\\UserHydrator',
+            ),
+        ),
+    ),
+    'doctrine-hydrator' => array(
+        'CanariumCore\\V1\\Rest\\User\\UserHydrator' => array(
+            'entity_class' => 'CanariumCore\\Entity\\User',
+            'object_manager' => 'doctrine.entitymanager.orm_default',
+            'by_value' => true,
+            'strategies' => array(),
+            'use_generated_hydrator' => true,
+        ),
+    ),
+    'zf-content-validation' => array(
+        'CanariumCore\\V1\\Rest\\User\\Controller' => array(
+            'input_filter' => 'CanariumCore\\V1\\Rest\\User\\Validator',
+        ),
+    ),
+    'input_filter_specs' => array(
+        'CanariumCore\\V1\\Rest\\User\\Validator' => array(
+            0 => array(
+                'name' => 'username',
+                'required' => false,
+                'filters' => array(
+                    0 => array(
+                        'name' => 'Zend\\Filter\\StringTrim',
+                    ),
+                    1 => array(
+                        'name' => 'Zend\\Filter\\StripTags',
+                    ),
+                ),
+                'validators' => array(
+                    0 => array(
+                        'name' => 'Zend\\Validator\\StringLength',
+                        'options' => array(
+                            'min' => 1,
+                            'max' => 255,
+                        ),
+                    ),
+                ),
+            ),
+            1 => array(
+                'name' => 'email',
+                'required' => true,
+                'filters' => array(
+                    0 => array(
+                        'name' => 'Zend\\Filter\\StringTrim',
+                    ),
+                    1 => array(
+                        'name' => 'Zend\\Filter\\StripTags',
+                    ),
+                ),
+                'validators' => array(
+                    0 => array(
+                        'name' => 'Zend\\Validator\\StringLength',
+                        'options' => array(
+                            'min' => 1,
+                            'max' => 255,
+                        ),
+                    ),
+                ),
+            ),
+            2 => array(
+                'name' => 'displayName',
+                'required' => false,
+                'filters' => array(
+                    0 => array(
+                        'name' => 'Zend\\Filter\\StringTrim',
+                    ),
+                    1 => array(
+                        'name' => 'Zend\\Filter\\StripTags',
+                    ),
+                ),
+                'validators' => array(
+                    0 => array(
+                        'name' => 'Zend\\Validator\\StringLength',
+                        'options' => array(
+                            'min' => 1,
+                            'max' => 50,
+                        ),
+                    ),
+                ),
+            ),
+            3 => array(
+                'name' => 'password',
+                'required' => true,
+                'filters' => array(
+                    0 => array(
+                        'name' => 'Zend\\Filter\\StringTrim',
+                    ),
+                    1 => array(
+                        'name' => 'Zend\\Filter\\StripTags',
+                    ),
+                ),
+                'validators' => array(
+                    0 => array(
+                        'name' => 'Zend\\Validator\\StringLength',
+                        'options' => array(
+                            'min' => 1,
+                            'max' => 128,
+                        ),
+                    ),
+                ),
+            ),
+            4 => array(
+                'name' => 'lastLogin',
+                'required' => false,
+                'filters' => array(),
+                'validators' => array(),
+            ),
+        ),
+    ),
 );
