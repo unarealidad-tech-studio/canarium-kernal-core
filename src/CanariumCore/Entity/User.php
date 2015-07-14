@@ -70,14 +70,14 @@ class User implements UserInterface, ProviderInterface
      */
     protected $roles;
 
-	/**
+    /**
      * @ORM\OneToMany(targetEntity="Form\Entity\ParentData",mappedBy="user")
-	 * @ORM\JoinColumn(name="id", referencedColumnName="user_id", onDelete="CASCADE")
-	 * @ORM\OrderBy({"date" = "DESC"})
+     * @ORM\JoinColumn(name="id", referencedColumnName="user_id", onDelete="CASCADE")
+     * @ORM\OrderBy({"date" = "DESC"})
      */
-	protected $forms;
+    protected $forms;
 
-	/** @ORM\Column(type="datetime", nullable=true) */
+    /** @ORM\Column(type="datetime", nullable=true) */
     protected $lastLogin;
 
     /**
@@ -161,7 +161,7 @@ class User implements UserInterface, ProviderInterface
      * @return string
      */
     public function getDisplayName(){
-		$displayName = $this->displayName;
+        $displayName = $this->displayName;
         if (null === $displayName) {
             $displayName = $this->username;
         }
@@ -171,7 +171,7 @@ class User implements UserInterface, ProviderInterface
         }
 
         return $displayName;
-	}
+    }
 
     /**
      * Set displayName.
@@ -251,15 +251,15 @@ class User implements UserInterface, ProviderInterface
         $this->roles[] = $role;
     }
 
-	public function getForms(){
-		return $this->forms;
-	}
+    public function getForms(){
+        return $this->forms;
+    }
 
-	public function getLastLogin(){
-		return $this->lastLogin;
-	}
+    public function getLastLogin(){
+        return $this->lastLogin;
+    }
 
-	public function setLastLogin($i){
-		$this->lastLogin = $i;
-	}
+    public function setLastLogin($i){
+        $this->lastLogin = $i;
+    }
 }
