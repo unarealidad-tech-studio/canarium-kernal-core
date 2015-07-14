@@ -634,8 +634,10 @@ return array(
         'CanariumCore\\V1\\Rest\\User\\UserHydrator' => array(
             'entity_class' => 'CanariumCore\\Entity\\User',
             'object_manager' => 'doctrine.entitymanager.orm_default',
-            'by_value' => true,
-            'strategies' => array(),
+            'by_value' => false,
+            'strategies' => array(
+                'roles' => 'ZF\\Apigility\\Doctrine\\Server\\Hydrator\\Strategy\\CollectionExtract',
+            ),
             'use_generated_hydrator' => true,
         ),
     ),
