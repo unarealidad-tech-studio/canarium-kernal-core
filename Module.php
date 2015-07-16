@@ -106,6 +106,21 @@ class Module implements ApigilityProviderInterface
 
 		$eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'selectLayoutBasedOnRoute'));
 
+        // Load the title maps
+        $app = $e->getApplication();
+        $app->getEventManager()->attach(
+            'dispatch',
+            function($e) use( $sm ) {
+                $routeMatch = $e->getRouteMatch();
+                $viewModel = $e->getViewModel();
+                $viewModel->setVariable('controller', $routeMatch->getParam('controller'));
+                $viewModel->setVariable('action', $routeMatch->getParam('action'));
+                $options = $sm->get('canariumcore_module_options');
+                $viewModel->setVariable('titleMaps', $options->getTitleMaps());
+            },
+            -100
+        );
+
     }
 
     public function getConfig()

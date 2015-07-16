@@ -14,6 +14,8 @@ class ModuleOptions extends AbstractOptions
 
     protected $login_on_denied_access = true;
 
+    protected $title_maps = array();
+
     public function setSiteName($site_name)
     {
         $this->site_name = $site_name;
@@ -63,6 +65,16 @@ class ModuleOptions extends AbstractOptions
     {
         $this->login_on_denied_access = $login_on_denied_access;
         return $this;
+    }
+
+    public function setTitleMaps($title_maps)
+    {
+        $this->title_maps = $title_maps;
+    }
+
+    public function getTitleMaps()
+    {
+        return $this->title_maps;
     }
 
 }
