@@ -508,6 +508,15 @@ return array(
                     ),
                 ),
             ),
+            'canarium-core.rest.doctrine.role' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/api/role[/:role_id]',
+                    'defaults' => array(
+                        'controller' => 'CanariumCore\\V1\\Rest\\Role\\Controller',
+                    ),
+                ),
+            ),
         ),
     ),
     'db' => array(
@@ -574,6 +583,7 @@ return array(
     'zf-versioning' => array(
         'uri' => array(
             0 => 'canarium-core.rest.doctrine.user',
+            1 => 'canarium-core.rest.doctrine.role',
         ),
     ),
     'zf-rest' => array(
@@ -600,10 +610,34 @@ return array(
             'collection_class' => 'CanariumCore\\V1\\Rest\\User\\UserCollection',
             'service_name' => 'User',
         ),
+        'CanariumCore\\V1\\Rest\\Role\\Controller' => array(
+            'listener' => 'CanariumCore\\V1\\Rest\\Role\\RoleResource',
+            'route_name' => 'canarium-core.rest.doctrine.role',
+            'route_identifier_name' => 'role_id',
+            'entity_identifier_name' => 'id',
+            'collection_name' => 'role',
+            'entity_http_methods' => array(
+                0 => 'GET',
+                1 => 'PATCH',
+                2 => 'PUT',
+                3 => 'DELETE',
+            ),
+            'collection_http_methods' => array(
+                0 => 'GET',
+                1 => 'POST',
+            ),
+            'collection_query_whitelist' => array(),
+            'page_size' => 25,
+            'page_size_param' => null,
+            'entity_class' => 'CanariumCore\\Entity\\Role',
+            'collection_class' => 'CanariumCore\\V1\\Rest\\Role\\RoleCollection',
+            'service_name' => 'Role',
+        ),
     ),
     'zf-content-negotiation' => array(
         'controllers' => array(
             'CanariumCore\\V1\\Rest\\User\\Controller' => 'HalJson',
+            'CanariumCore\\V1\\Rest\\Role\\Controller' => 'HalJson',
         ),
         'accept_whitelist' => array(
             'CanariumCore\\V1\\Rest\\User\\Controller' => array(
@@ -614,6 +648,18 @@ return array(
         ),
         'content_type_whitelist' => array(
             'CanariumCore\\V1\\Rest\\User\\Controller' => array(
+                0 => 'application/json',
+            ),
+        ),
+        'accept_whitelist' => array(
+            'CanariumCore\\V1\\Rest\\Role\\Controller' => array(
+                0 => 'application/vnd.canarium-core.v1+json',
+                1 => 'application/hal+json',
+                2 => 'application/json',
+            ),
+        ),
+        'content_type_whitelist' => array(
+            'CanariumCore\\V1\\Rest\\Role\\Controller' => array(
                 0 => 'application/json',
             ),
         ),
@@ -631,6 +677,17 @@ return array(
                 'route_name' => 'canarium-core.rest.doctrine.user',
                 'is_collection' => true,
             ),
+            'CanariumCore\\Entity\\Role' => array(
+                'route_identifier_name' => 'role_id',
+                'entity_identifier_name' => 'id',
+                'route_name' => 'canarium-core.rest.doctrine.role',
+                'hydrator' => 'CanariumCore\\V1\\Rest\\Role\\RoleHydrator',
+            ),
+            'CanariumCore\\V1\\Rest\\Role\\RoleCollection' => array(
+                'entity_identifier_name' => 'id',
+                'route_name' => 'canarium-core.rest.doctrine.role',
+                'is_collection' => true,
+            ),
         ),
     ),
     'zf-apigility' => array(
@@ -639,11 +696,24 @@ return array(
                 'object_manager' => 'doctrine.entitymanager.orm_default',
                 'hydrator' => 'CanariumCore\\V1\\Rest\\User\\UserHydrator',
             ),
+            'CanariumCore\\V1\\Rest\\Role\\RoleResource' => array(
+                'object_manager' => 'doctrine.entitymanager.orm_default',
+                'hydrator' => 'CanariumCore\\V1\\Rest\\Role\\RoleHydrator',
+            ),
         ),
     ),
     'doctrine-hydrator' => array(
         'CanariumCore\\V1\\Rest\\User\\UserHydrator' => array(
             'entity_class' => 'CanariumCore\\Entity\\User',
+            'object_manager' => 'doctrine.entitymanager.orm_default',
+            'by_value' => false,
+            'strategies' => array(
+                'roles' => 'ZF\\Apigility\\Doctrine\\Server\\Hydrator\\Strategy\\CollectionExtract',
+            ),
+            'use_generated_hydrator' => true,
+        ),
+        'CanariumCore\\V1\\Rest\\Role\\RoleHydrator' => array(
+            'entity_class' => 'CanariumCore\\Entity\\Role',
             'object_manager' => 'doctrine.entitymanager.orm_default',
             'by_value' => true,
             'strategies' => array(),
@@ -653,6 +723,9 @@ return array(
     'zf-content-validation' => array(
         'CanariumCore\\V1\\Rest\\User\\Controller' => array(
             'input_filter' => 'CanariumCore\\V1\\Rest\\User\\Validator',
+        ),
+        'CanariumCore\\V1\\Rest\\Role\\Controller' => array(
+            'input_filter' => 'CanariumCore\\V1\\Rest\\Role\\Validator',
         ),
     ),
     'input_filter_specs' => array(
@@ -746,6 +819,29 @@ return array(
                 'required' => false,
                 'filters' => array(),
                 'validators' => array(),
+            ),
+        ),
+        'CanariumCore\\V1\\Rest\\Role\\Validator' => array(
+            0 => array(
+                'name' => 'roleId',
+                'required' => false,
+                'filters' => array(
+                    0 => array(
+                        'name' => 'Zend\\Filter\\StringTrim',
+                    ),
+                    1 => array(
+                        'name' => 'Zend\\Filter\\StripTags',
+                    ),
+                ),
+                'validators' => array(
+                    0 => array(
+                        'name' => 'Zend\\Validator\\StringLength',
+                        'options' => array(
+                            'min' => 1,
+                            'max' => 255,
+                        ),
+                    ),
+                ),
             ),
         ),
     ),

@@ -54,7 +54,9 @@ class Module implements ApigilityProviderInterface
 		function(\Zend\EventManager\Event $e) use ($sm) {
 			$userForm = $e->getParam('user');
 			$objectManager = $sm->get('doctrine.entitymanager.orm_default');
-			$user = $objectManager->getRepository('CanariumCore\Entity\User')->find($userForm->getId());
+
+            $userEntityClass = $sm->get('zfcuser_user_service')->getOptions()->getUserEntityClass();
+            $user = $objectManager->getRepository($userEntityClass)->find($userForm->getId());
 
 			// role : user
 			$role = $objectManager->getRepository('CanariumCore\Entity\Role')->find(1);
@@ -82,9 +84,10 @@ class Module implements ApigilityProviderInterface
 		$zfcAuthEvents->attach( 'authenticate', function( $authEvent ) use( $sm ){
 			try
 			{
-				$objectManager = $sm->get('doctrine.entitymanager.orm_default');
-				$user = $objectManager->getRepository('CanariumCore\Entity\User')->find($authEvent->getIdentity());
-				$user->setLastLogin(new \DateTime('now'));
+                $objectManager = $sm->get('doctrine.entitymanager.orm_default');
+                $userEntityClass = $sm->get('zfcuser_user_service')->getOptions()->getUserEntityClass();
+                $user = $objectManager->getRepository($userEntityClass)->find($authEvent->getIdentity());
+                $user->setLastLogin(new \DateTime('now'));
 				$objectManager->flush();
 				return true;
 			}
@@ -102,6 +105,21 @@ class Module implements ApigilityProviderInterface
 		} catch(\Exception $error){ }
 
 		$eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'selectLayoutBasedOnRoute'));
+
+        // Load the title maps
+        $app = $e->getApplication();
+        $app->getEventManager()->attach(
+            'dispatch',
+            function($e) use( $sm ) {
+                $routeMatch = $e->getRouteMatch();
+                $viewModel = $e->getViewModel();
+                $viewModel->setVariable('controller', $routeMatch->getParam('controller'));
+                $viewModel->setVariable('action', $routeMatch->getParam('action'));
+                $options = $sm->get('canariumcore_module_options');
+                $viewModel->setVariable('titleMaps', $options->getTitleMaps());
+            },
+            -100
+        );
 
     }
 

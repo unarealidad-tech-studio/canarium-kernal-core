@@ -16,6 +16,8 @@ class ModuleOptions extends AbstractOptions
 
     protected $logout_third_party_login_too = false;
 
+    protected $title_maps = array();
+
     public function setSiteName($site_name)
     {
         $this->site_name = $site_name;
@@ -83,4 +85,14 @@ class ModuleOptions extends AbstractOptions
         $this->logout_third_party_login_too = $logout_third_party_login_too;
     }
 
+    public function setTitleMaps($title_maps)
+    {
+        $this->title_maps = $title_maps;
+    }
+
+    public function getTitleMaps()
+    {
+        return $this->title_maps;
+
+    }
 }
