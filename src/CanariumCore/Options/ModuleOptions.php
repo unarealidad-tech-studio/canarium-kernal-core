@@ -14,6 +14,8 @@ class ModuleOptions extends AbstractOptions
 
     protected $login_on_denied_access = true;
 
+    protected $logout_third_party_login_too = false;
+
     public function setSiteName($site_name)
     {
         $this->site_name = $site_name;
@@ -63,6 +65,22 @@ class ModuleOptions extends AbstractOptions
     {
         $this->login_on_denied_access = $login_on_denied_access;
         return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isLogoutThirdPartyLoginToo()
+    {
+        return $this->logout_third_party_login_too;
+    }
+
+    /**
+     * @param boolean $logout_third_party_login_too
+     */
+    public function setLogoutThirdPartyLoginToo($logout_third_party_login_too)
+    {
+        $this->logout_third_party_login_too = $logout_third_party_login_too;
     }
 
 }

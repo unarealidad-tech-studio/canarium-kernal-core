@@ -9,7 +9,6 @@
 
 namespace CanariumCore\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class UserController extends \ZfcUser\Controller\UserController
@@ -30,5 +29,35 @@ class UserController extends \ZfcUser\Controller\UserController
 		$view->data = $data;
 		return $view;
 	}
+
+    public function logoutAction()
+    {
+        $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
+        $this->zfcUserAuthentication()->getAuthAdapter()->logoutAdapters();
+        $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
+
+        $redirect_route = $this->getOptions()->getLogoutRedirectRoute();
+
+        $redirect = $this->params()->fromPost('redirect', $this->params()->fromQuery('redirect', false));
+
+        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
+            $redirect_route = $redirect;
+        }
+
+        $logout_third_party = $this->getServiceLocator()
+            ->get('canariumcore_module_options')
+            ->isLogoutThirdPartyLoginToo();
+
+        if ($logout_third_party) {
+            $uri = $this->getRequest()->getUri();
+            $base = sprintf('%s://%s', $uri->getScheme(), $uri->getHost());
+            return $this->redirect()->toUrl(
+                'https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue='.
+                $base.$this->url()->fromRoute($redirect_route)
+            );
+        } else {
+            return $this->redirect()->toRoute($redirect_route);
+        }
+    }
 
 }

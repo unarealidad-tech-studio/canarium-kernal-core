@@ -5,6 +5,7 @@ return array(
         'site_name'                  => 'Skeleton Application',
         'verbose_title'              => false,
         'is_authentication_required' => false,
-        'login_on_denied_access' => true
+        'login_on_denied_access' => true,
+        'logout_third_party_login_too' => false
     )
 );

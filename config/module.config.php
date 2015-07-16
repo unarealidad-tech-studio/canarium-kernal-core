@@ -441,6 +441,17 @@ return array(
                     ),
                 ),
             ),
+            'userlogout' => array(
+                'priority' => 1001,
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/user/logout',
+                    'defaults' => array(
+                        'controller' => 'zfcuser',
+                        'action' => 'logout',
+                    ),
+                ),
+            ),
             'admin' => array(
                 'type' => 'Literal',
                 'options' => array(
@@ -594,14 +605,14 @@ return array(
         'controllers' => array(
             'CanariumCore\\V1\\Rest\\User\\Controller' => 'HalJson',
         ),
-        'accept-whitelist' => array(
+        'accept_whitelist' => array(
             'CanariumCore\\V1\\Rest\\User\\Controller' => array(
                 0 => 'application/vnd.canarium-core.v1+json',
                 1 => 'application/hal+json',
                 2 => 'application/json',
             ),
         ),
-        'content-type-whitelist' => array(
+        'content_type_whitelist' => array(
             'CanariumCore\\V1\\Rest\\User\\Controller' => array(
                 0 => 'application/json',
             ),
