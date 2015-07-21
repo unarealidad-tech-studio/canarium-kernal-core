@@ -81,6 +81,12 @@ class User implements UserInterface, ProviderInterface
     protected $lastLogin;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    protected $company;
+
+    /**
      * Initialies the roles variable.
      */
     public function __construct()
@@ -261,5 +267,13 @@ class User implements UserInterface, ProviderInterface
 
     public function setLastLogin($i){
         $this->lastLogin = $i;
+    }
+
+    public function getCompany(){
+        return $this->company;
+    }
+
+    public function setCompany($i){
+        $this->company = $i;
     }
 }
