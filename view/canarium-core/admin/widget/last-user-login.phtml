@@ -1,0 +1,24 @@
+<?php 
+if ($user) {
+	$time =  $user->getLastLogin()->format('M j, Y g:i A');
+	$username =  $user->getUsername() == ''  ? $user->getEmail() : $user->getUsername();
+} else {
+	$time = '';
+	$username = '';
+}
+?>
+<section class="panel">
+	<div class="symbol purple-color">
+		<i class="fa fa-clock-o"></i>
+	</div>
+	<div class="value white">
+		<?php if ($time == '' && $username == ''): ?>
+		<h1 class="timer purple-color" data-from="0" data-to="320" data-speed="1000">No Data</h1>
+		<p>Latest User Log In</p>
+		<?php else: ?>
+		<h4 class="timer purple-color" data-from="0" data-to="320" data-speed="1000"><?php echo $time; ?></h4>
+		<p>Latest Log In by <?php echo $username; ?></p>
+		<?php endif;?>
+		
+	</div>
+</section>

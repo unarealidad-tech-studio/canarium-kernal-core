@@ -1,14 +1,15 @@
 <div class="page-head">
-    <h3 class="m-b-less">
-        Welcome back! <b>(<?php echo $this->zfcUserIdentity()->getDisplayName() ?>)</b>
-    </h3>
+	<h3 class="m-b-less">
+		Welcome back! <b>(<?php echo $this->zfcUserIdentity()->getDisplayName() ?>)</b>
+	</h3>
 </div>
 <div class="wrapper">
 	<div class="row">
 		<div class="col-xs-12">
-			<section class="panel">
-				
-			</section>
+			<section class="panel"></section>
 		</div>
+
+		<?php $this->renderWidgets(); ?>
+
 	</div>
 </div>
