@@ -363,8 +363,9 @@ return array(
                     'controller' => 'CanariumCore\\Controller\\Index',
                     'roles' => array(
                         0 => 'admin',
-                        1 => 'owner',
-                        2 => 'guest',
+                        1 => 'user',
+                        2 => 'owner',
+                        3 => 'guest',
                     ),
                 ),
                 43 => array(

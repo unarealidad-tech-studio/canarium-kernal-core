@@ -209,6 +209,10 @@ class Module implements ApigilityProviderInterface
         $sm = $app->getServiceManager();
         $auth = $sm->get('zfcuser_auth_service');
 
+        if ($routeMatch->getMatchedRouteName() == 'oauth2callback') {
+            return;
+        }
+
         if (!$auth->hasIdentity() && $routeMatch->getMatchedRouteName() != 'zfcuser/login' && $routeMatch->getMatchedRouteName() != 'zfcuser/register') {
 
             //GENERATE THE URL FROM CURRENT ROUTE (YOUR blog ONE)
