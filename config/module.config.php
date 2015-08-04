@@ -604,7 +604,9 @@ return array(
                 0 => 'GET',
                 1 => 'POST',
             ),
-            'collection_query_whitelist' => array(),
+            'collection_query_whitelist' => array(
+                0 => 'current_logged_in',
+            ),
             'page_size' => 25,
             'page_size_param' => 'limit',
             'entity_class' => 'CanariumCore\\Entity\\User',
@@ -641,26 +643,25 @@ return array(
             'CanariumCore\\V1\\Rest\\Role\\Controller' => 'HalJson',
         ),
         'accept_whitelist' => array(
-            'CanariumCore\\V1\\Rest\\User\\Controller' => array(
+            'CanariumCore\\V1\\Rest\\Role\\Controller' => array(
                 0 => 'application/vnd.canarium-core.v1+json',
                 1 => 'application/hal+json',
                 2 => 'application/json',
             ),
         ),
         'content_type_whitelist' => array(
-            'CanariumCore\\V1\\Rest\\User\\Controller' => array(
+            'CanariumCore\\V1\\Rest\\Role\\Controller' => array(
                 0 => 'application/json',
             ),
         ),
-        'accept_whitelist' => array(
-            'CanariumCore\\V1\\Rest\\Role\\Controller' => array(
-                0 => 'application/vnd.canarium-core.v1+json',
-                1 => 'application/hal+json',
-                2 => 'application/json',
+        'accept-whitelist' => array(
+            'CanariumCore\\V1\\Rest\\User\\Controller' => array(
+                0 => 'application/json',
+                1 => 'application/*+json',
             ),
         ),
-        'content_type_whitelist' => array(
-            'CanariumCore\\V1\\Rest\\Role\\Controller' => array(
+        'content-type-whitelist' => array(
+            'CanariumCore\\V1\\Rest\\User\\Controller' => array(
                 0 => 'application/json',
             ),
         ),
