@@ -386,7 +386,8 @@ return array(
                     'controller' => 'CanariumCore\\V1\\Rest\\User\\Controller',
                     'roles' => array(
                         0 => 'admin',
-                        1 => 'owner',
+                        1 => 'user',
+                        2 => 'owner',
                     ),
                 ),
             ),
