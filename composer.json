@@ -45,7 +45,7 @@
         "zfcampus/zf-apigility-doctrine": "dev-master",
         "zfcampus/zf-deploy": "~1.0",
         "zfcampus/zf-development-mode": "~2.0",
-        "zfcampus/zf-doctrine-querybuilder": "~1.0"
+        "zfcampus/zf-doctrine-querybuilder": "~1.0",
         "canarium/canarium-libraries/error-handler" : "dev-master",
         "canarium/canarium-libraries/goalio-mail-service" : "dev-master",
         "canarium/canarium-libraries/google-sso" : "dev-master",
