@@ -17,6 +17,19 @@ class UserController extends \ZfcUser\Controller\UserController
 
 	}
 
+    public function loginAction()
+    {
+        /**
+         * Workaround for the remember me problem
+         */
+        $post = $this->getRequest()->getPost();
+        if (!$post->get('remember_me')) {
+            $post->set('remember_me', '0');
+        }
+
+        return parent::loginAction();
+    }
+
 	public function submittedFormAction(){
 		$id = (int) $this->params()->fromRoute('id', 0);
 
