@@ -191,6 +191,9 @@ class Module implements ApigilityProviderInterface
     public function getServiceConfig()
     {
         return array(
+            'invokables' => array(
+                'canariumcore_user_service' => 'CanariumCore\Service\User',
+            ),
             'factories' => array(
                 'canariumcore_module_options' => function ($sm) {
                     $config = $sm->get('Config');
