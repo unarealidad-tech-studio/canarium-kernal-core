@@ -1,5 +1,14 @@
 <?php
+global $instance_name;
+$overrideConfigPath = getcwd().'/instances/'.$instance_name.'/config/autoload/override.global.php';
+
 return array(
+
+    'zf-configuration' => array(
+        'config_file' => $overrideConfigPath,
+        'enable_short_array' => false,
+    ),
+
     'zfcuser' => array(
         'UserEntityClass' => '\\CanariumCore\\Entity\\User',
         'EnableDefaultEntities' => false,
