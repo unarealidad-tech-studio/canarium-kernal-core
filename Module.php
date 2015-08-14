@@ -156,8 +156,8 @@ class Module implements ApigilityProviderInterface
 
     public function redirectToRegistrationError($message = 'Maximum user limit has been reached')
     {
-        $url = $this->event->getRouter()->assemble(array('action' => 'register'), array('name' => 'zfcuser/register'));
-        $url.= '?error='.urlencode($message);
+        // $url = $this->event->getRouter()->assemble(array('action' => 'register'), array('name' => 'zfcuser/register'));
+        $url = '?error='.urlencode($message);
         $response = $this->event->getResponse();
         $response->getHeaders()->addHeaderLine('Location', $url);
         $response->setStatusCode(302);
