@@ -240,7 +240,33 @@ class Module implements ApigilityProviderInterface
                 'canariumcore_module_options' => function ($sm) {
                     $config = $sm->get('Config');
                     return new Options\ModuleOptions(isset($config['canariumcore']) ? $config['canariumcore'] : array());
-                }
+                },
+                'canariumcore_user_form' => function ($sm) {
+                    $form = $sm->get('zfcuser_register_form');
+                    $userService = $sm->get('zfcuser_user_service');
+
+                    $form->setHydrator($userService->getFormHydrator());
+                    $form->get('submit')->setValue('Save');
+
+                    // Add the roles
+                    $objectManager = $sm->get('Doctrine\ORM\EntityManager');
+                    $form->add(array(
+                        'name' => 'role',
+                        'type' => 'DoctrineModule\Form\Element\ObjectMultiCheckbox',
+                        'options' => array(
+                            'object_manager'    => $objectManager,
+                            'target_class'      => 'CanariumCore\Entity\Role',
+                            'property'          => 'roleId',
+                            'label'             => 'Roles'
+                        ),
+                        'attributes' => array(
+                            'empty_option' => '',
+                            'allow_empty' => false,
+                            'continue_if_empty' => false,
+                        )
+                    ));
+                    return $form;
+                },
             )
         );
     }
