@@ -35,6 +35,59 @@ class User implements ServiceLocatorAwareInterface
         $em->flush();
     }
 
+    public function updateUser($user, array $data)
+    {
+        $form = $this->getServiceLocator()->get('canariumcore_user_form');
+
+        $validatePassword = true;
+        if ($data['passwordVerify'] == '' && $data['password'] == '') {
+            $validatePassword = false;
+        }
+
+        $objectManager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+        $validatorParams = array(
+            'user' => $user,
+            'key' => 'email',
+            'entityManager' => $objectManager
+        );
+
+        $validator = new \CanariumCore\Validator\NoUserExists($validatorParams);
+        $inputFilter = new \CanariumCore\InputFilter\UserRuntimeFilter($validator, $validatePassword);
+        $form->setInputFilter($inputFilter);
+
+        $oldPassword = $user->getPassword();
+
+        $form->bind($user);
+        $form->setData($data);
+
+        if (!$form->isValid()) {
+            return false;
+        }
+
+        // Remove existing roles to avoid duplicates
+        $currentRoles = $user->getRoles(false);
+        $user->removeRole($currentRoles);
+
+        // Add new roles
+        foreach ($data['role'] as $roleId) {
+            $role = $objectManager->getRepository('CanariumCore\Entity\Role')->find($roleId);
+            $user->addRole($role);
+        }
+
+        // Save password
+        if ($user->getPassword() != '') {
+            $options = $this->getServiceLocator()->get('zfcuser_module_options');
+            $bcrypt = new \Zend\Crypt\Password\Bcrypt();
+            $bcrypt->setCost($options->getPasswordCost());
+            $user->setPassword($bcrypt->create($user->getPassword()));
+        } else {
+            $user->setPassword($oldPassword);
+        }
+
+        $objectManager->flush();
+        return $user;
+    }
+
     /**
      * Retrieve service manager instance
      *
