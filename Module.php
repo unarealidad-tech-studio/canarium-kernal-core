@@ -20,8 +20,11 @@ use ZF\Apigility\Provider\ApigilityProviderInterface;
 
 class Module implements ApigilityProviderInterface
 {
+    protected $event;
+
     public function onBootstrap(MvcEvent $e)
     {
+        $this->event         = $e;
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
@@ -35,6 +38,27 @@ class Module implements ApigilityProviderInterface
             $strategy = new RedirectionStrategy();
             $eventManager->attach($strategy);
         }
+
+        // Check for registration limit
+        $self = $this;
+        $app->getEventManager()->attach( 'dispatch',
+            function($e) use ($sm, $self) {
+                $errorMessage = $sm->get('Request')->getQuery('error');
+                $routeMatch = $e->getRouteMatch();
+                $controllerName = $routeMatch->getParam('controller');
+                $controllerAction = $routeMatch->getParam('action');
+
+                if ($controllerName == 'zfcuser' && $controllerAction == 'register' &&
+                    $errorMessage != 'Maximum user limit has been reached') {
+                    $service = $sm->get('canariumcore_user_service');
+                    if ($service->isMaximumUserReached()) {
+                        $self->redirectToRegistrationError();
+                    }
+                }
+
+            }, 100
+        );
+
 
         $app->getEventManager()->attach('render', array($this, 'setLayoutTitle'));
 
@@ -50,7 +74,14 @@ class Module implements ApigilityProviderInterface
         }
 
 		$userService = $sm->get('zfcuser_user_service');
-		$userService->getEventManager()->attach('register.post',
+		$userService->getEventManager()->attach('register', function(\Zend\EventManager\Event $e) use ($sm, $self){
+            $service = $sm->get('canariumcore_user_service');
+            if ($service->isMaximumUserReached()) {
+                $self->redirectToRegistrationError();
+            }
+        });
+
+        $userService->getEventManager()->attach('register.post',
 		function(\Zend\EventManager\Event $e) use ($sm) {
 			$userForm = $e->getParam('user');
 			$objectManager = $sm->get('doctrine.entitymanager.orm_default');
@@ -121,6 +152,17 @@ class Module implements ApigilityProviderInterface
             -100
         );
 
+    }
+
+    public function redirectToRegistrationError($message = 'Maximum user limit has been reached')
+    {
+        $url = $this->event->getRouter()->assemble(array('action' => 'register'), array('name' => 'zfcuser/register'));
+        $url.= '?error='.urlencode($message);
+        $response = $this->event->getResponse();
+        $response->getHeaders()->addHeaderLine('Location', $url);
+        $response->setStatusCode(302);
+        $response->sendHeaders();
+        exit;
     }
 
     public function getConfig()
