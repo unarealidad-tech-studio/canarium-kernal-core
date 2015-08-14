@@ -240,10 +240,12 @@ class User implements UserInterface, ProviderInterface
      *
      * @return array
      */
-    public function getRoles()
+    public function getRoles($array = true)
     {
-        return $this->roles->getValues();
+        return $array ? $this->roles->getValues() : $this->roles;
     }
+
+
 
     /**
      * Add a role to the user.
@@ -254,7 +256,19 @@ class User implements UserInterface, ProviderInterface
      */
     public function addRole($role)
     {
-        $this->roles[] = $role;
+        $this->roles->add($role);
+    }
+
+    public function addRoles($roles) {
+        foreach ($roles as $role) {
+            $this->roles->add($role);
+        }
+    }
+
+    public function removeRole($roles) {
+        foreach ($roles as $role) {
+            $this->roles->removeElement($role);
+        }
     }
 
     public function getForms(){
