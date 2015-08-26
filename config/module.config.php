@@ -125,7 +125,11 @@ return array(
                 'guest' => array(),
                 'user' => array(
                     'children' => array(
-                        'admin' => array(),
+                        'admin' => array(
+                            'children' => array(
+                                'superuser' => array()
+                            )
+                        ),
                     ),
                 ),
             ),
@@ -134,6 +138,7 @@ return array(
             'BjyAuthorize\\Provider\\Resource\\Config' => array(
                 'admin' => array(),
                 'owner' => array(),
+                'superuser' => array(),
             ),
         ),
         'rule_providers' => array(
@@ -151,6 +156,13 @@ return array(
                             0 => 'owner',
                         ),
                         1 => 'owner',
+                        2 => array(),
+                    ),
+                    2 => array(
+                        0 => array(
+                            0 => 'superuser',
+                        ),
+                        1 => 'superuser',
                         2 => array(),
                     ),
                 ),
