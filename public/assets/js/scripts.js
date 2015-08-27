@@ -266,4 +266,15 @@
 			// </div>
 		});
 
+
+    if ($('input[name=submit]').length) {
+        $('input[name=submit]').closest('form').on('submit', function () {
+            var prevValue = $(this).val();
+            $('input[name=submit]').prop('disabled', true);
+            $('input[name=submit]').val('Processing request...');
+        });
+    }
+
+
+
 })(jQuery);
