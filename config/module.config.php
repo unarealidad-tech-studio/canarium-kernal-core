@@ -497,7 +497,8 @@ return array(
                 'options' => array(
                     'route' => '/user/authenticate-user',
                     'defaults' => array(
-                        'controller' => 'zfcuser',
+                        '__NAMESPACE__' => 'CanariumCore\\Controller',
+                        'controller' => 'User',
                         'action' => 'authenticate-user',
                     ),
                 ),
