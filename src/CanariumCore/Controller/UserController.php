@@ -30,6 +30,36 @@ class UserController extends \ZfcUser\Controller\UserController
         return parent::loginAction();
     }
 
+    public function authenticateUserAction()
+    {
+        if ($this->zfcUserAuthentication()->hasIdentity()) {
+            return array(
+                'user' => $this->zfcUserAuthentication()->getIdentity()
+            );
+        }
+
+        $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
+        $redirect = $this->params()->fromPost('redirect', $this->params()->fromQuery('redirect', false));
+
+        $result = $adapter->prepareForAuthentication($this->getRequest());
+
+        // Return early if an adapter returned a response
+        if ($result instanceof Response) {
+            return $result;
+        }
+
+        $auth = $this->zfcUserAuthentication()->getAuthService()->authenticate($adapter);
+
+        if ($auth->isValid()) {
+            return array(
+                'user' => $this->zfcUserAuthentication()->getIdentity()
+            );
+        } else {
+            $adapter->resetAdapters();
+            return array('error' => $this->failedLoginMessage);
+        }
+    }
+
 	public function submittedFormAction(){
 		$id = (int) $this->params()->fromRoute('id', 0);
 
