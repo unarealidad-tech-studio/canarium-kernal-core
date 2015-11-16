@@ -88,6 +88,22 @@ class User implements ServiceLocatorAwareInterface
         return $user;
     }
 
+    public function getHighestRole(CanariumUser $user)
+    {
+        $roles = $user->getRoles();
+
+        $highestRoleId = 0;
+        $output = null;
+        foreach ($roles as $role) {
+            if ($role->getId() > $highestRoleId) {
+                $output = $role;
+                $highestRoleId = $role->getId();
+            }
+        }
+
+        return $output;
+    }
+
     /**
      * Retrieve service manager instance
      *
