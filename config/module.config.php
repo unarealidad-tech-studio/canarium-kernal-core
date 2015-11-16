@@ -492,6 +492,17 @@ return array(
                     ),
                 ),
             ),
+            'jsonauthenticate' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/user/authenticate-user',
+                    'defaults' => array(
+                        'controller' => 'zfcuser',
+                        'action' => 'authenticate-user',
+                    ),
+                ),
+                'may_terminate' => true,
+            ),
             'canarium-core' => array(
                 'type' => 'Literal',
                 'options' => array(
