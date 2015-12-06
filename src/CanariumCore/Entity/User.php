@@ -87,12 +87,18 @@ class User implements UserInterface, ProviderInterface
     protected $company;
 
     /**
+     * @ORM\OneToMany(targetEntity="CanariumCore\Entity\UserMeta", mappedBy="user", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    protected $meta;
+
+    /**
      * Initialies the roles variable.
      */
     public function __construct()
     {
         $this->roles = new ArrayCollection();
         $this->forms = new ArrayCollection();
+        $this->meta  = new ArrayCollection();
     }
 
     /**
@@ -289,5 +295,36 @@ class User implements UserInterface, ProviderInterface
 
     public function setCompany($i){
         $this->company = $i;
+    }
+
+    public function getMeta() 
+    {
+        return $this->meta;
+    }
+
+    public function setMeta($meta_array) 
+    {
+        $this->meta = $meta_array;
+    }
+    public function addMeta(UserMeta $meta) 
+    {
+        $this->meta->add($meta);
+    }
+
+    public function getMetaValue($key) 
+    { 
+        foreach ($this->getMeta() as $meta) {
+            if ($meta->getName() == $key) {
+                return $meta->getValue();
+            }
+        }
+    }
+    public function setMetaValue($key, $value) 
+    {
+        foreach ($this->meta as $meta) {
+            if ($meta->getName() == $key) {
+                $meta->setValue($value);
+            }
+        }
     }
 }
