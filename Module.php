@@ -34,6 +34,13 @@ class Module implements ApigilityProviderInterface
 
         $config = $sm->get('canariumcore_module_options');
 
+        // listen for SSO logins
+        $accessToken = $sm->get('Request')->getQuery('access_token');
+        if ($accessToken != '') {
+            $sm->get('canariumcore_app_service')->SSO($accessToken);
+            // The user should be logged in beyond this point
+        }
+
         if ($config->isLoginOnDeniedAccess()) {
             $strategy = new RedirectionStrategy();
             $eventManager->attach($strategy);

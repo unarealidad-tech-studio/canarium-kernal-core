@@ -55,6 +55,28 @@ class Application implements ServiceLocatorAwareInterface
         return false;
     }
 
+    public function getUserByAccessToken($token)
+    {
+        $em = $this->getObjectManager();
+        $accessToken = $em->getRepository('CanariumCore\Entity\AccessToken')->findOneBy(array('access_token' => $token));
+        if ($accessToken && $accessToken->getExpiryDate()->getTimestamp() > time()) {
+            return $accessToken->getUser();
+        }
+        throw new \CanariumCore\Exception\InvalidUserException();
+    }
+
+    public function SSO($token) 
+    {
+        $user = $this->getUserByAccessToken($token);
+        $user->setLastLogin(new \DateTime());
+        $this->getObjectManager()->flush();
+        
+        $zfcUserAuth = $this->getServiceLocator()->get('controllerPluginManager')->get('zfcUserAuthentication');
+
+        // reuse google sso object
+        $login = new \GoogleSSO\Authentication\ForceLogin($user);
+        $zfcUserAuth->getAuthService()->authenticate( $login );
+    }
 
     public function getObjectManager() 
     {
