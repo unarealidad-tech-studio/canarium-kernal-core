@@ -12,11 +12,17 @@ class ModuleOptions extends AbstractOptions
 
     protected $is_authentication_required = false;
 
+    protected $is_authentication_whitelist = array();
+
     protected $login_on_denied_access = true;
 
     protected $logout_third_party_login_too = false;
 
     protected $title_maps = array();
+
+    protected $user_meta = array();
+
+    protected $application_hash = '';
 
     public function setSiteName($site_name)
     {
@@ -94,5 +100,38 @@ class ModuleOptions extends AbstractOptions
     {
         return $this->title_maps;
 
+    }
+
+    public function getUserMeta() 
+    {
+        return $this->user_meta;
+    }
+
+    public function setUserMeta($user_meta) 
+    {
+        $this->user_meta = $user_meta;
+        return $this;
+    }
+
+    public function getApplicationHash() 
+    {
+        return $this->application_hash;
+    }
+
+    public function setApplicationHash($hash) 
+    {
+        $this->application_hash = $hash;
+        return $this;
+    }
+
+    public function setIsAuthenticationWhitelist($whitelist) 
+    {
+        $this->is_authentication_whitelist = $whitelist;
+        return $this;
+    }
+
+    public function getIsAuthenticationWhitelist() 
+    {
+        return $this->is_authentication_whitelist;
     }
 }

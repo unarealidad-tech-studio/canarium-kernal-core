@@ -34,6 +34,15 @@ class Module implements ApigilityProviderInterface
 
         $config = $sm->get('canariumcore_module_options');
 
+        // listen for SSO logins
+        $accessToken = $sm->get('Request')->getQuery('access_token') == '' ? 
+                        $sm->get('Request')->getPost('access_token') : 
+                        $sm->get('Request')->getQuery('access_token');
+        if ($accessToken != '') {
+            $sm->get('canariumcore_app_service')->SSO($accessToken);
+            // The user should be logged in beyond this point
+        }
+
         if ($config->isLoginOnDeniedAccess()) {
             $strategy = new RedirectionStrategy();
             $eventManager->attach($strategy);
@@ -235,6 +244,7 @@ class Module implements ApigilityProviderInterface
         return array(
             'invokables' => array(
                 'canariumcore_user_service' => 'CanariumCore\Service\User',
+                'canariumcore_app_service' => 'CanariumCore\Service\Application',
             ),
             'factories' => array(
                 'canariumcore_module_options' => function ($sm) {
@@ -279,12 +289,16 @@ class Module implements ApigilityProviderInterface
         $routeMatch = $e->getRouteMatch();
         $sm = $app->getServiceManager();
         $auth = $sm->get('zfcuser_auth_service');
+        $config = $sm->get('canariumcore_module_options');
 
         if ($routeMatch->getMatchedRouteName() == 'oauth2callback') {
             return;
         }
 
-        if (!$auth->hasIdentity() && $routeMatch->getMatchedRouteName() != 'zfcuser/login' && $routeMatch->getMatchedRouteName() != 'zfcuser/register') {
+        $validRoutes = array('zfcuser/login', 'zfcuser/register');
+        $validRoutes = array_merge($validRoutes, (array)$config->getIsAuthenticationWhitelist());
+        
+        if (!$auth->hasIdentity() && !in_array($routeMatch->getMatchedRouteName(), $validRoutes)) {
 
             //GENERATE THE URL FROM CURRENT ROUTE (YOUR blog ONE)
             $redirect = $e->getRouter()->assemble(
