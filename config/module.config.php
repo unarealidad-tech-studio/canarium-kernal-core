@@ -464,6 +464,13 @@ return array(
                         2 => 'owner',
                     ),
                 ),
+                46 => array(
+                    'controller' => 'zfcuser',
+                    'action' => 'authenticate-user',
+                    'roles' => array(
+                        0 => 'guest',
+                    ),
+                ),
             ),
         ),
     ),
@@ -493,16 +500,15 @@ return array(
                 ),
             ),
             'jsonauthenticate' => array(
+                'priority' => 1001,
                 'type' => 'Literal',
                 'options' => array(
                     'route' => '/user/authenticate-user',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'CanariumCore\\Controller',
-                        'controller' => 'User',
+                        'controller' => 'zfcuser',
                         'action' => 'authenticate-user',
                     ),
                 ),
-                'may_terminate' => true,
             ),
             'canarium-core' => array(
                 'type' => 'Literal',

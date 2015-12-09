@@ -10,6 +10,7 @@
 namespace CanariumCore\Controller;
 
 use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
 
 class UserController extends \ZfcUser\Controller\UserController
 {
@@ -32,10 +33,14 @@ class UserController extends \ZfcUser\Controller\UserController
 
     public function authenticateUserAction()
     {
+        $entityManager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+        $hydrator = new \DoctrineModule\Stdlib\Hydrator\DoctrineObject($entityManager);
+
         if ($this->zfcUserAuthentication()->hasIdentity()) {
-            return array(
-                'user' => $this->zfcUserAuthentication()->getIdentity()
-            );
+            $entityArray = $hydrator->extract($this->zfcUserAuthentication()->getIdentity());
+            return new JsonModel(array(
+                'user' => $entityArray
+            ));
         }
 
         $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
@@ -51,12 +56,15 @@ class UserController extends \ZfcUser\Controller\UserController
         $auth = $this->zfcUserAuthentication()->getAuthService()->authenticate($adapter);
 
         if ($auth->isValid()) {
-            return array(
-                'user' => $this->zfcUserAuthentication()->getIdentity()
-            );
+            $entityArray = $hydrator->extract($this->zfcUserAuthentication()->getIdentity());
+            return new JsonModel(array(
+                'user' => $entityArray
+            ));
         } else {
             $adapter->resetAdapters();
-            return array('error' => $this->failedLoginMessage);
+            return new JsonModel(array(
+                'error' => $this->failedLoginMessage
+            ));
         }
     }
 
