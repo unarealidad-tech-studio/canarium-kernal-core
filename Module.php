@@ -35,12 +35,14 @@ class Module implements ApigilityProviderInterface
         $config = $sm->get('canariumcore_module_options');
 
         // listen for SSO logins
-        $accessToken = $sm->get('Request')->getQuery('access_token') == '' ? 
-                        $sm->get('Request')->getPost('access_token') : 
-                        $sm->get('Request')->getQuery('access_token');
-        if ($accessToken != '') {
-            $sm->get('canariumcore_app_service')->SSO($accessToken);
-            // The user should be logged in beyond this point
+        if (method_exists($sm->get('Request'), 'getQuery') && method_exists($sm->get('Request'), 'getPost')) {
+            $accessToken = $sm->get('Request')->getQuery('access_token') == '' ? 
+                            $sm->get('Request')->getPost('access_token') : 
+                            $sm->get('Request')->getQuery('access_token');
+            if ($accessToken != '') {
+                $sm->get('canariumcore_app_service')->SSO($accessToken);
+                // The user should be logged in beyond this point
+            }
         }
 
         if ($config->isLoginOnDeniedAccess()) {
