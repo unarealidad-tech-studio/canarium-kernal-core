@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="user_meta")
+ * @ORM\HasLifecycleCallbacks
  */
 class UserMeta
 {
@@ -39,6 +40,18 @@ class UserMeta
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     protected $user;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $date_updated;
+
+    /**
+     * @ORM\PreUpdate
+     **/
+    public function onPreUpdate(){
+        $this->setDateUpdated(new \DateTime('now'));
+    }
 
     public function getId() 
     {
@@ -81,6 +94,17 @@ class UserMeta
     public function setUser(\CanariumCore\Entity\User $user) 
     {
         $this->user = $user;
+        return $this;
+    }
+
+    public function getDateUpdated()
+    {
+        return $this->date_updated;
+    }
+
+    public function setDateUpdated(\DateTime $date)
+    {
+        $this->date_updated = $date;
         return $this;
     }
 }
