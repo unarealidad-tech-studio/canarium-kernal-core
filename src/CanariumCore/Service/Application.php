@@ -62,12 +62,16 @@ class Application implements ServiceLocatorAwareInterface
         if ($accessToken && $accessToken->getExpiryDate()->getTimestamp() > time()) {
             return $accessToken->getUser();
         }
-        throw new \CanariumCore\Exception\InvalidUserException();
     }
 
     public function SSO($token) 
     {
         $user = $this->getUserByAccessToken($token);
+        
+        if (!$user) {
+            return;
+        }
+
         $user->setLastLogin(new \DateTime());
         $this->getObjectManager()->flush();
         
