@@ -76,13 +76,11 @@ class Module implements ApigilityProviderInterface
         $viewModel = $e->getApplication()->getMvcEvent()->getViewModel();
         $viewModel->site_name = $config->getSiteName();
 
-        if ($config->getIsAuthenticationRequired()) {
-            $app->getEventManager()->attach(
-                'route',
-                array($this, 'checkIfAuthenticated'),
-                -100
-            );
-        }
+        $app->getEventManager()->attach(
+            'route',
+            array($this, 'checkIfAuthenticated'),
+            -100
+        );
 
 		$userService = $sm->get('zfcuser_user_service');
 		$userService->getEventManager()->attach('register', function(\Zend\EventManager\Event $e) use ($sm, $self){
@@ -293,34 +291,36 @@ class Module implements ApigilityProviderInterface
         $auth = $sm->get('zfcuser_auth_service');
         $config = $sm->get('canariumcore_module_options');
 
-        if ($routeMatch->getMatchedRouteName() == 'oauth2callback') {
-            return;
-        }
+        if ($config->getIsAuthenticationRequired()) {
+            if ($routeMatch->getMatchedRouteName() == 'oauth2callback') {
+                return;
+            }
 
-        $validRoutes = array('zfcuser/login', 'zfcuser/register');
-        $validRoutes = array_merge($validRoutes, (array)$config->getIsAuthenticationWhitelist());
-        
-        if (!$auth->hasIdentity() && !in_array($routeMatch->getMatchedRouteName(), $validRoutes)) {
+            $validRoutes = array('zfcuser/login', 'zfcuser/register');
+            $validRoutes = array_merge($validRoutes, (array)$config->getIsAuthenticationWhitelist());
 
-            //GENERATE THE URL FROM CURRENT ROUTE (YOUR blog ONE)
-            $redirect = $e->getRouter()->assemble(
-                $routeMatch->getParams(),
-                array(
-                    'name' => $routeMatch->getMatchedRouteName(),
-                )
-            );
+            if (!$auth->hasIdentity() && !in_array($routeMatch->getMatchedRouteName(), $validRoutes)) {
 
-            $response = $e->getResponse();
-            $response->getHeaders()->addHeaderLine(
-                'Location',
-                $e->getRouter()->assemble(
+                //GENERATE THE URL FROM CURRENT ROUTE (YOUR blog ONE)
+                $redirect = $e->getRouter()->assemble(
+                    $routeMatch->getParams(),
+                    array(
+                        'name' => $routeMatch->getMatchedRouteName(),
+                    )
+                );
+
+                $response = $e->getResponse();
+                $response->getHeaders()->addHeaderLine(
+                    'Location',
+                    $e->getRouter()->assemble(
                         array(),
                         array('name' => 'zfcuser/login')
 
-                )
-            );
-            $response->setStatusCode(302);
-            return $response;
+                    )
+                );
+                $response->setStatusCode(302);
+                return $response;
+            }
         }
 
         if ($routeMatch->getMatchedRouteName() == 'zfcuser/login' || $routeMatch->getMatchedRouteName() == 'zfcuser/register') {
