@@ -9,7 +9,34 @@ use CanariumCore\Entity\User as CanariumUser;
 
 class User implements ServiceLocatorAwareInterface
 {
+    protected $serviceLocator;
     protected $objectManager;
+    protected $canariumCoreModuleOptions;
+
+    public function getUserByAccessToken($token)
+    {
+        $em = $this->getObjectManager();
+        $accessToken = $em->getRepository('CanariumCore\Entity\AccessToken')->findOneBy(array('access_token' => $token));
+        if ($accessToken && $accessToken->getExpiryDate()->getTimestamp() > time()) {
+            return $accessToken->getUser();
+        }
+        throw new InvalidTokenException("Error Processing Request", 1);
+
+    }
+
+    public function getUserByEmail($email)
+    {
+        $em = $this->getObjectManager();
+        return $em->getRepository('CanariumCore\Entity\User')->findOneBy(array('email' => $email));
+    }
+
+    public function getCanariumCoreModuleOptions()
+    {
+        if (!$this->canariumCoreModuleOptions) {
+            $this->canariumCoreModuleOptions = $this->getServiceLocator()->get('canariumcore_module_options');
+        }
+        return $this->canariumCoreModuleOptions;
+    }
 
     public function countUsers()
     {
@@ -123,6 +150,23 @@ class User implements ServiceLocatorAwareInterface
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
+        return $this;
+    }
+
+
+    public function getObjectManager()
+    {
+        if (!$this->objectManager) {
+            $this->setObjectManager();
+        }
+        return $this->objectManager;
+    }
+
+    public function setObjectManager($objectManager = null)
+    {
+        if (!$objectManager) {
+            $this->objectManager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+        }
         return $this;
     }
 

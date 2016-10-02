@@ -471,6 +471,15 @@ return array(
                         0 => 'guest',
                     ),
                 ),
+                47 => array(
+                    'controller' => 'CanariumCore\\Controller\\Api',
+                    'roles' => array(
+                        0 => 'admin',
+                        1 => 'owner',
+                        2 => 'user',
+                        3 => 'guest',
+                    ),
+                ),
             ),
         ),
     ),
@@ -484,6 +493,7 @@ return array(
             'CanariumCore\\Controller\\Index' => 'CanariumCore\\Controller\\IndexController',
             'Admin\\CanariumCore' => 'CanariumCore\\Controller\\AdminController',
             'User' => 'CanariumCore\\Controller\\UserController',
+            'CanariumCore\\Controller\\Api' => 'CanariumCore\\Controller\\ApiController',
             'zfcuser' => 'CanariumCore\\Controller\\UserController',
         ),
     ),
@@ -507,6 +517,32 @@ return array(
                     'defaults' => array(
                         'controller' => 'zfcuser',
                         'action' => 'authenticate-user',
+                    ),
+                ),
+            ),
+            'canarium-api' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/canarium-api',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'CanariumCore\\Controller',
+                        'controller' => 'Api',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'default' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/[:action]',
+                            'constraints' => array(
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Api',
+                            ),
+                        ),
                     ),
                 ),
             ),

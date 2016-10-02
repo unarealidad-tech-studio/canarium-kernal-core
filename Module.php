@@ -44,7 +44,7 @@ class Module implements ApigilityProviderInterface
                 // The user should be logged in beyond this point
             }
         }
-
+//
         if ($config->isLoginOnDeniedAccess()) {
             $strategy = new RedirectionStrategy();
             $eventManager->attach($strategy);
