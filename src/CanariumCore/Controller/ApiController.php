@@ -35,6 +35,43 @@ class ApiController extends AbstractActionController
         die('index');
     }
 
+    public function getCurrentUserAction()
+    {
+        $current_user = $current_user = $this->zfcUserAuthentication()->getIdentity();
+
+        $module_options = $this->getServiceLocator()->get('canariumcore_module_options');
+
+        if (empty($current_user) || $module_options->getDefaultAppId() == '' || $module_options->getDefaultAppSecret() == '') {
+            return $this->response(self::FailedCreatingToken, array(), 'Invalid request');
+        }
+
+        try {
+            $appService = $this->getServiceLocator()->get('canariumcore_app_service');
+            $token = $appService->authenticate($module_options->getDefaultAppId(), $module_options->getDefaultAppSecret())
+                ->createToken($current_user->getEmail());
+            if ($token) {
+                $accessToken = $token->getAccessToken();
+                $expiryDate  = $token->getExpiryDate();
+                $user        = $token->getUser();
+
+                $output['access_token'] = $accessToken;
+                $output['expiry_date']  = $expiryDate ? $expiryDate->format(\DateTime::ATOM) : '';
+                $output['name']         = $user->getDisplayName();
+                $output['email']        = $user->getEmail();
+                $output['user_id']        = $user->getId();
+
+                return $this->response(self::RequestSuccess, $output);
+            }
+
+            return $this->response(self::FailedCreatingToken);
+        } catch (InvalidUserException $e) {
+            return $this->response(self::InvalidUser);
+        } catch (\Exception $e) {
+            return $this->response(self::UnidentifiedError);
+        }
+
+    }
+
     public function loginAction()
     {
         $appId      = $this->getRequest()->getPost('id');       // test: 1;
@@ -58,6 +95,7 @@ class ApiController extends AbstractActionController
                 $output['expiry_date']  = $expiryDate ? $expiryDate->format(\DateTime::ATOM) : '';
                 $output['name']         = $user->getDisplayName();
                 $output['email']        = $user->getEmail();
+                $output['user_id']      = $user->getId();
 
                 return $this->response(self::RequestSuccess, $output);
             }

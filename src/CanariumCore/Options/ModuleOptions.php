@@ -24,6 +24,9 @@ class ModuleOptions extends AbstractOptions
 
     protected $application_hash = '';
 
+    protected $default_app_id = '';
+    protected $default_app_secret = '';
+
     public function setSiteName($site_name)
     {
         $this->site_name = $site_name;
@@ -133,5 +136,33 @@ class ModuleOptions extends AbstractOptions
     public function getIsAuthenticationWhitelist() 
     {
         return $this->is_authentication_whitelist;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultAppId() {
+        return $this->default_app_id;
+    }
+
+    /**
+     * @param string $default_app_id
+     */
+    public function setDefaultAppId($default_app_id) {
+        $this->default_app_id = $default_app_id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultAppSecret() {
+        return $this->default_app_secret;
+    }
+
+    /**
+     * @param string $default_app_secret
+     */
+    public function setDefaultAppSecret($default_app_secret) {
+        $this->default_app_secret = $default_app_secret;
     }
 }
