@@ -83,6 +83,8 @@ class UserController extends \ZfcUser\Controller\UserController
 
     public function logoutAction()
     {
+        $current_user = $this->zfcUserAuthentication()->getIdentity();
+
         $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
         $this->zfcUserAuthentication()->getAuthAdapter()->logoutAdapters();
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
@@ -93,6 +95,14 @@ class UserController extends \ZfcUser\Controller\UserController
 
         if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
             $redirect_route = $redirect;
+        }
+
+        $delete_user = $this->params()->fromQuery('delete_user', false);
+
+        if ($delete_user) {
+            $entity_manager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+            $entity_manager->remove($current_user);
+            $entity_manager->flush();
         }
 
         $logout_third_party = $this->getServiceLocator()
