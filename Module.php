@@ -47,7 +47,13 @@ class Module implements ApigilityProviderInterface
 
         if ($config->isLoginOnDeniedAccess()) {
             $strategy = new RedirectionStrategy();
+
+            if ($config->getDeniedAccessRedirectRoute()) {
+                $strategy->setRedirectRoute($config->getDeniedAccessRedirectRoute());
+            }
+
             $eventManager->attach($strategy);
+
         }
 
         // Check for registration limit
@@ -308,6 +314,7 @@ class Module implements ApigilityProviderInterface
                         'name' => $routeMatch->getMatchedRouteName(),
                     )
                 );
+
 
                 $response = $e->getResponse();
                 $response->getHeaders()->addHeaderLine(

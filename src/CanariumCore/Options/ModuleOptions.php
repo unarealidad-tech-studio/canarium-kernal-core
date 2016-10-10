@@ -27,6 +27,9 @@ class ModuleOptions extends AbstractOptions
     protected $default_app_id = '';
     protected $default_app_secret = '';
 
+    protected $denied_access_redirect_route;
+
+
     public function setSiteName($site_name)
     {
         $this->site_name = $site_name;
@@ -164,5 +167,19 @@ class ModuleOptions extends AbstractOptions
      */
     public function setDefaultAppSecret($default_app_secret) {
         $this->default_app_secret = $default_app_secret;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDeniedAccessRedirectRoute() {
+        return $this->denied_access_redirect_route;
+    }
+
+    /**
+     * @param mixed $denied_access_redirect_route
+     */
+    public function setDeniedAccessRedirectRoute($denied_access_redirect_route) {
+        $this->denied_access_redirect_route = $denied_access_redirect_route;
     }
 }
