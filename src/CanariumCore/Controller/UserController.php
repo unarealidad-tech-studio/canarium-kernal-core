@@ -100,9 +100,14 @@ class UserController extends \ZfcUser\Controller\UserController
         $delete_user = $this->params()->fromQuery('delete_user', false);
 
         if ($delete_user) {
-            $entity_manager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
-            $entity_manager->remove($current_user);
-            $entity_manager->flush();
+            try {
+                $entity_manager = $this->getServiceLocator()
+                    ->get('Doctrine\ORM\EntityManager');
+                $entity_manager->remove($current_user);
+                $entity_manager->flush();
+            } catch (\Exception $e) {
+                //just ignore since this is maybe a constraint error
+            }
         }
 
         $logout_third_party = $this->getServiceLocator()

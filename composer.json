@@ -35,7 +35,7 @@
         "zendframework/zendservice-recaptcha": "*",
         "webino/webino-image-thumb": "dev-master",
         "zf-commons/zfc-user-doctrine-orm": "1.0.0",
-        "google/apiclient": "1.0.*@beta",
+        "google/apiclient": "^2.0",
         "beberlei/DoctrineExtensions": "dev-master",
         "gedmo/doctrine-extensions": "2.3.*",
         "goalio/goalio-rememberme": "1.*",
