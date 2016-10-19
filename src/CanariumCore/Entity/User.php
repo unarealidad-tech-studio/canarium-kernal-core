@@ -92,6 +92,18 @@ class User implements UserInterface, ProviderInterface
     protected $meta;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $first_name;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $last_name;
+
+    /**
      * Initialies the roles variable.
      */
     public function __construct()
@@ -326,5 +338,33 @@ class User implements UserInterface, ProviderInterface
                 $meta->setValue($value);
             }
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstName() {
+        return $this->first_name;
+    }
+
+    /**
+     * @param string $first_name
+     */
+    public function setFirstName($first_name) {
+        $this->first_name = $first_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName() {
+        return $this->last_name;
+    }
+
+    /**
+     * @param string $last_name
+     */
+    public function setLastName($last_name) {
+        $this->last_name = $last_name;
     }
 }
