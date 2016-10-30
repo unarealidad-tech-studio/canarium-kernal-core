@@ -38,16 +38,25 @@ class Application implements ServiceLocatorAwareInterface
         }
 
         if ($user && $this->currentApplicationInstance) {
-            $hash   = $this->getModuleOptions()->getApplicationHash();
-            $secret = $this->currentApplicationInstance->getAppSecret();
-            $token  = sha1($hash . $secret . $email . time());
+            $criteria = new \Doctrine\Common\Collections\Criteria();
+            $criteria->where($criteria->expr()->eq('user', $user));
+            $criteria->andWhere($criteria->expr()->gte('expiry_date', new \DateTime()));
 
-            $accessToken = new AccessToken();
-            $accessToken->setAccessToken($token);
-            $accessToken->setUser($user);
-            $accessToken->setExpiryDate(new \DateTime('now + 3 years'));
+            $accessToken = $em->getRepository('\CanariumCore\Entity\AccessToken')->matching($criteria)->first();
 
-            $em->persist($accessToken);
+            if (!$accessToken) {
+                $hash   = $this->getModuleOptions()->getApplicationHash();
+                $secret = $this->currentApplicationInstance->getAppSecret();
+                $token  = sha1($hash . $secret . $email . time());
+
+                $accessToken = new AccessToken();
+                $accessToken->setAccessToken($token);
+                $accessToken->setUser($user);
+                $accessToken->setExpiryDate(new \DateTime('now + 3 years'));
+
+                $em->persist($accessToken);
+            }
+
             $em->flush();
 
             return $accessToken;
@@ -82,6 +91,9 @@ class Application implements ServiceLocatorAwareInterface
         $zfcUserAuth->getAuthService()->authenticate( $login );
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
     public function getObjectManager() 
     {
         if (! $this->objectManager) {

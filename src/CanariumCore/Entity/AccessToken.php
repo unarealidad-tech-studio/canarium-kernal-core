@@ -35,7 +35,7 @@ class AccessToken
     protected $expiry_date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CanariumCore\Entity\User", cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="CanariumCore\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $user;
