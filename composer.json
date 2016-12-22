@@ -4,7 +4,7 @@
     "description":  "The base of canarium that includes the framework and the abstraction layers that is crucial for building canarium-based applications.",
     "keywords":     ["canarium", "core", "una realidad"],
     "homepage":     "http://www.canarium.ph",
-    "license":      "proprietary",
+    "license":      "MIT",
     "authors": [
         {
             "name": "Errol A. Zuñiga Jr.",
