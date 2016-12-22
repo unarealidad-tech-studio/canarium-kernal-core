@@ -1,5 +1,5 @@
 {
-    "name":         "canarium/canarium-kernal/canarium-core",
+    "name":         "unarealidad/canarium-kernal-core",
     "type":         "library",
     "description":  "The base of canarium that includes the framework and the abstraction layers that is crucial for building canarium-based applications.",
     "keywords":     ["canarium", "core", "una realidad"],
@@ -46,13 +46,13 @@
         "zfcampus/zf-deploy": "~1.0",
         "zfcampus/zf-development-mode": "~2.0",
         "zfcampus/zf-doctrine-querybuilder": "~1.0",
-        "canarium/canarium-libraries/error-handler" : "dev-master",
-        "canarium/canarium-libraries/goalio-mail-service" : "dev-master",
-        "canarium/canarium-libraries/google-sso" : "dev-master",
-        "canarium/canarium-modules/page" : "dev-master",
-        "canarium/canarium-modules/form" : "dev-master",
-        "canarium/canarium-modules/settings" : "dev-master",
-        "canarium/canarium-modules/contact-us" : "dev-master"
+        "unarealidad/canarium-libraries-error-handler" : "dev-master",
+        "unarealidad/canarium-libraries-goalio-mail-service" : "dev-master",
+        "unarealidad/canarium-libraries-google-sso" : "dev-master",
+        "unarealidad/canarium-modules-page" : "dev-master",
+        "unarealidad/canarium-modules-form" : "dev-master",
+        "unarealidad/canarium-modules-settings" : "dev-master",
+        "unarealidad/canarium-modules-contact-us" : "dev-master"
     },
 
     "repositories": [
