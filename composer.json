@@ -3,13 +3,14 @@
     "type":         "library",
     "description":  "The base of canarium that includes the framework and the abstraction layers that is crucial for building canarium-based applications.",
     "keywords":     ["canarium", "core", "una realidad"],
-    "homepage":     "http://packages.canarium.ph",
+    "homepage":     "http://www.canarium.ph",
     "license":      "proprietary",
     "authors": [
         {
             "name": "Errol A. Zuñiga Jr.",
             "email": "errol.zuniga@unarealidad.com",
-            "role": "developer"
+            "role": "developer",
+            "homepage": "https://github.com/Fatal-Errol"
         },
         {
             "name": "Jethro Laviste.",
