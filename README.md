@@ -50,7 +50,7 @@ default_app_secret | '50b9d04e28e1380bf522a7430b7a9b5c08a8cc16' | false | The de
 # Exposed Pages
 
 URL | Template | Access | Description
------ | ----- | ----- | ----- | -----
+----- | ----- | ----- | -----
 /user/login | user/login.phtml | Guest | Displays the login page
 /user/logout | _none_ | User | Logs the user out
 /user/register | user/register.phtml | Guest | Displays the registration page
