@@ -26,6 +26,8 @@ User: admin@admin.com
 Password: 123456
 User Level: Admin
 
+Remember to change the password for each account.
+
 # Configuration
 
 Configuration main key: `canariumcore`
