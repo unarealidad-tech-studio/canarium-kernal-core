@@ -5,10 +5,13 @@ return array(
         'site_name'                     => 'Skeleton Application',
         'verbose_title'                 => false,
         'is_authentication_required'    => false,
+        'denied_access_redirect_route'  => 'login',
         'is_authentication_whitelist' 	=> array(),
         'login_on_denied_access'        => true,
         'logout_third_party_login_too'  => false,
         'application_hash'              => '',
-        'user_meta'                     => array(),
+        'application_hash'            => '#1HEEKS)>>#EEE',
+        'default_app_id' => 12,
+        'default_app_secret' => '50b9d04e2823e1380bf522a7430b7a9b5c08a8cc16'
     )
 );
